@@ -9,4 +9,8 @@ public class Equipo {
 	private String estadio;
 	private ArrayList<Entrenamiento> entraList;
 
+
+    public void test(){
+        System.out.println("Testing github");
+    }
 }
