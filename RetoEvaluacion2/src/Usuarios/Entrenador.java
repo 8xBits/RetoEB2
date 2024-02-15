@@ -31,5 +31,9 @@ public class Entrenador extends Usuarios {
 	public void setCargo(CargoEntrenador cargo) {
 		this.cargo = cargo;
 	}
+	
+	public void getDatos() {
+		
+	}
 
 }
