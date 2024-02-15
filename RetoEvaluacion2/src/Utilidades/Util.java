@@ -209,6 +209,11 @@ public class Util {
 				System.out.println("Valor no num�rico. Introduce de nuevo:");
 				error = true;
 			}
+			//Todos los int son mayor que 0
+			if(num<0) {
+				System.out.println("El numero introducido debe ser mayor que 0");
+				error=true;
+			}
 		} while (error);
 		return num;
 	}
