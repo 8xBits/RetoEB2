@@ -55,4 +55,12 @@ public class Jugador extends Usuarios {
 		this.asistencias = asistencias;
 	}
 
+	public void getDatos() {
+		super.getDatos();
+		System.out.println("Nombre del equipo: " + this.nombreEquipo);
+		System.out.println("Dorsal: " + this.dorsal);
+		System.out.println("Goles: " + this.goles);
+		System.out.println("Asistencias: " + this.asistencias);
+	}
+
 }
