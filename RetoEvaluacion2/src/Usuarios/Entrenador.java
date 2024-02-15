@@ -33,7 +33,7 @@ public class Entrenador extends Usuarios {
 	}
 	
 	public void getDatos() {
-		
+		super.getDatos();
 	}
 
 }
