@@ -8,6 +8,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+
 import Equipo.Equipo;
 import Entrenamiento.Entrenamiento;
 import Usuarios.*;
@@ -178,7 +180,7 @@ public class Main {
 
 //enzo
 	private static void menuEntrenador() {
-	System.out.println("-------MENU-----------");
+		System.out.println("-------MENU-----------");
 		System.out.println("1.- Programar entrenamiento");
 		System.out.println("2.- Añadir jugadores");
 		System.out.println("3.- Comprobar información de jugadores");
@@ -212,10 +214,12 @@ public class Main {
 			break;
 		}
 	}
+
 	private static void programarEntrenamiento(File fichEquipo, File fichUsuarios) {
 		// TODO Auto-generated method stub
 
 	}
+
 	private static void anadirJugadores(File fichUsuarios) {
 		int opc;
 		ObjectOutputStream oos = null;
@@ -241,6 +245,7 @@ public class Main {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
 
 	private static void comprobarInfoJugador(File fichUsuarios) {
 		// TODO Auto-generated method stub
@@ -280,6 +285,7 @@ public class Main {
 		// TODO Auto-generated method stub
 
 	}
+
 //omar
 	private static void menuJugador() {
 
