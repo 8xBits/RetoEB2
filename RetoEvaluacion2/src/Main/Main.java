@@ -43,13 +43,15 @@ public class Main {
 					seleccionEntrenador(menu, fichEquipo, fichUsuarios);
 					break;
 				case 2:
-					menuJugador();
+					menuJugador(fichEquipo, fichUsuarios);
 
 					break;
 				}
 			}
 		} while (userType != 4);
 	}// main
+	
+	
 
 	private static void crearAdmin(File fich) {
 		if (!fich.exists()) {
@@ -287,7 +289,7 @@ public class Main {
 	}
 
 //omar
-	private static void menuJugador() {
+	private static void menuJugador(File fichUsuarios,File fichEquipo) {
 		int opc;
 		do {
 			System.out.println("MENU Jugador");
@@ -297,10 +299,10 @@ public class Main {
 			opc = Util.leerInt();
 			switch (opc) {
 			case 1:
-				comprobarDorsal(fich);
+				comprobarDorsal(fichUsuarios);
 				break;
 			case 2:
-				verInfoEquipo(fich);
+				verInfoEquipo(fichEquipo);
 				break;
 			case 3:
 				System.out.println("Hasta pronto..");
@@ -313,12 +315,13 @@ public class Main {
 	public static void comprobarDorsal(File fich) {
 		int choice;
 		Jugador jugador= new Jugador();
-		Equipo equipo= new Equipo();
+		
 		ArrayList<Integer> dorsalNoLibre= new ArrayList<>();
 		ArrayList<Jugador> jugadorList= new ArrayList<>();
+
 			fileToArray(fich,jugadorList);
 		for(Jugador jug :jugadorList) {
-			if(jug.getNombreEquipo().equalsIgnoreCase(equipo.getNombreEquipo())) {
+			if(jug.getNombreEquipo().equalsIgnoreCase(jugador.getNombreEquipo())) {
 				dorsalNoLibre.add(jug.getDorsal());
 			}
 		}
@@ -336,11 +339,11 @@ public class Main {
 
 	}
 
-<<<<<<< HEAD
+
 	public static void verInfoEquipo(File fich) {
 		ArrayList<Equipo> equipoList= new ArrayList<>();
 		Equipo equipo= new Equipo();
-		fileToArray(fich,equipoList);
+		fileEquipoToArray(fich,equipoList);
 		for(Equipo equip :equipoList) {
 			if(equip.getNombreEquipo().equalsIgnoreCase(equipo.getNombreEquipo())) {
 				equip.getDatosEquipo();
@@ -371,7 +374,24 @@ public class Main {
 	            e.printStackTrace();
 	        }
 	    }
-
+	  private static void fileEquipoToArray(File fich, ArrayList<Equipo> empList) {
+	        if (fich.exists()) {
+	            ObjectInputStream ois;
+	            try {
+	                ois = new ObjectInputStream(new FileInputStream(fich));
+	                int cuantos = Util.calculoFichero(fich);
+	                for (int i = 0; i < cuantos; i++) {
+	                	Equipo emp = (Equipo) ois.readObject();
+	                    empList.add(emp);
+	                }
+	                ois.close();
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            } catch (ClassNotFoundException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
 	    private static void fileToArray(File fich, ArrayList<Jugador> empList) {
 	        if (fich.exists()) {
 	            ObjectInputStream ois;
@@ -382,11 +402,6 @@ public class Main {
 	                	Jugador emp = (Jugador) ois.readObject();
 	                    empList.add(emp);
 	                }
-	              /*  Empleado emp = (Empleado) ois.readObject();
-	                while (emp != null) {
-	                    arrayFich.add(emp);
-	                    emp = (Empleado) ois.readObject();
-	                }*/
 	                ois.close();
 	            } catch (IOException e) {
 	                e.printStackTrace();
