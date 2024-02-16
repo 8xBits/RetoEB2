@@ -1,20 +1,22 @@
 package Usuarios;
 
+import Utilidades.Util;
+
 public class Usuarios {
 	protected String nombre;
 	protected String user;
-	protected String contraseña;
+	protected String contrasena;
 
 	public Usuarios() {
 		this.nombre = "";
 		this.user = "";
-		this.contraseña = "";
+		this.contrasena = "";
 	}
 
 	public Usuarios(String nombre, String user, String contraseña) {
 		this.nombre = nombre;
 		this.user = user;
-		this.contraseña = contraseña;
+		this.contrasena = contraseña;
 	}
 
 	public String getNombre() {
@@ -34,14 +36,28 @@ public class Usuarios {
 	}
 
 	public String getContraseña() {
-		return contraseña;
+		return contrasena;
 	}
 
 	public void setContraseña(String contraseña) {
-		this.contraseña = contraseña;
+		this.contrasena = contraseña;
 	}
 
 	public void getDatos() {
 		System.out.println("Nombre: " + this.nombre);
+		System.out.println("Ususario: " + this.user);
+		System.out.println("Contraseña: " + this.contrasena);
+		
+	}
+	
+	public void setDatos() {
+		
+		System.out.println("Introduce el nombre: ");
+		this.nombre = Util.introducirCadena();
+		System.out.println("Introduce el nombre de usuario: ");
+		this.user = Util.introducirCadena();
+		System.out.println("Introduce la contraseña: ");
+		this.contrasena = Util.introducirCadena();
+		
 	}
 }

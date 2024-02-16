@@ -1,5 +1,7 @@
 package Usuarios;
 
+import Utilidades.Util;
+
 public class Jugador extends Usuarios {
 	private String nombreEquipo;
 	private int dorsal;
@@ -61,6 +63,18 @@ public class Jugador extends Usuarios {
 		System.out.println("Dorsal: " + this.dorsal);
 		System.out.println("Goles: " + this.goles);
 		System.out.println("Asistencias: " + this.asistencias);
+	}
+
+	public void setDatos() {
+		super.setDatos();
+		System.out.println("Introduce el nombre del equipo: ");
+		this.nombreEquipo = Util.introducirCadena();
+		System.out.println("Introduce el dorsal del jugador: ");
+		this.dorsal = Util.leerInt();
+		System.out.println("Introduce la cantidad de goles: ");
+		this.goles = Util.leerInt();
+		System.out.println("Introduce la cantidad de asistencias: ");
+		this.asistencias = Util.leerInt();
 	}
 
 }
