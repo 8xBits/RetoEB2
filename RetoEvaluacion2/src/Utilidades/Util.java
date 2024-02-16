@@ -10,6 +10,8 @@ import java.io.ObjectInputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 
 public class Util {
 
@@ -209,10 +211,10 @@ public class Util {
 				System.out.println("Valor no num�rico. Introduce de nuevo:");
 				error = true;
 			}
-			//Todos los int son mayor que 0
-			if(num<0) {
+			// Todos los int son mayor que 0
+			if (num < 0) {
 				System.out.println("El numero introducido debe ser mayor que 0");
-				error=true;
+				error = true;
 			}
 		} while (error);
 		return num;
@@ -267,6 +269,20 @@ public class Util {
 			}
 		}
 		return cont;
+	}
+
+	public class MyObjectOutputStream extends ObjectOutputStream {
+		protected void writeStreamHeader() throws IOException {
+			reset();
+		}
+
+		public MyObjectOutputStream() throws IOException {
+			super();
+		}
+
+		public MyObjectOutputStream(OutputStream out) throws IOException {
+			super(out);
+		}
 	}
 
 }
