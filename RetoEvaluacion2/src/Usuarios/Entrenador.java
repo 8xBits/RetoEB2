@@ -1,5 +1,7 @@
 package Usuarios;
 
+import Utilidades.Util;
+
 public class Entrenador extends Usuarios {
 	private String nombreEquipo;
 	private CargoEntrenador cargo;
@@ -31,9 +33,35 @@ public class Entrenador extends Usuarios {
 	public void setCargo(CargoEntrenador cargo) {
 		this.cargo = cargo;
 	}
-	
+
 	public void getDatos() {
+		
 		super.getDatos();
+		System.out.println("Nombre del equipo: " + this.nombreEquipo);
+		System.out.println("Cargo: " + this.cargo);
+
+	}
+
+	public void setDatos() {
+		
+		super.setDatos();
+		String str;
+		boolean error = false;
+		System.out.println("Introduce el nombre del equipo: ");
+		this.nombreEquipo = Util.introducirCadena();
+
+		do {
+			System.out.println(
+					"Introduzca el cargo del entrenador: (Primer entrenador / Segundo entrenador/ Preparador fisico)");
+			str = (String) Util.introducirCadena();
+			try {
+				this.cargo = CargoEntrenador.valueOf(str.toUpperCase());
+				error = false;
+			} catch (IllegalArgumentException e) {
+				System.out.println(e);
+				error = true;
+			}
+		} while (error);
 	}
 
 }
