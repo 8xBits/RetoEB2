@@ -38,7 +38,7 @@ public class Main {
 					break;
 				case 1:
 					menuEntrenador();
-
+					seleccionEntrenador(menu, fichEquipo, fichUsuarios);
 					break;
 				case 2:
 					menuJugador();
@@ -178,9 +178,108 @@ public class Main {
 
 //enzo
 	private static void menuEntrenador() {
+	System.out.println("-------MENU-----------");
+		System.out.println("1.- Programar entrenamiento");
+		System.out.println("2.- Añadir jugadores");
+		System.out.println("3.- Comprobar información de jugadores");
+		System.out.println("4.- Eliminar jugadores");
+		System.out.println("5.- Lista de entrenamientos");
+		System.out.println("0.- Salir");
 
 	}
 
+	public static void seleccionEntrenador(int menu, File fichEquipo, File fichUsuarios) {
+
+		menu = Util.leerInt("¿Que desea hacer?", 0, 5);
+		switch (menu) {
+
+		case 1:
+			programarEntrenamiento(fichEquipo, fichUsuarios);
+			break;
+		case 2:
+			anadirJugadores(fichUsuarios);
+			break;
+		case 3:
+			comprobarInfoJugador(fichUsuarios);
+			break;
+		case 4:
+			eliminarJugadores(fichUsuarios);
+			break;
+		case 5:
+			listaEntrenamiento(fichEquipo);
+			break;
+		case 0:
+			break;
+		}
+	}
+	private static void programarEntrenamiento(File fichEquipo, File fichUsuarios) {
+		// TODO Auto-generated method stub
+
+	}
+	private static void anadirJugadores(File fichUsuarios) {
+		int opc;
+		ObjectOutputStream oos = null;
+		try {
+			if (fichUsuarios.exists()) {
+				oos = new MyObjectOutputStream(new FileOutputStream(fichUsuarios, true));
+			} else {
+				oos = new ObjectOutputStream(new FileOutputStream(fichUsuarios));
+			}
+
+			do {
+				Usuarios jugador = new Jugador();
+				jugador.setDatos();
+				oos.writeObject(jugador);
+				opc = Util.leerInt("¿Desea añadir mas jugadores? 1=si/2=no", 1, 2);
+			} while (opc == 1);
+			oos.close();
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	private static void comprobarInfoJugador(File fichUsuarios) {
+		// TODO Auto-generated method stub
+
+	}
+
+	private static void eliminarJugadores(File fichUsuarios) {
+		int pos = 0;
+		String nombre;
+		ArrayList<Jugador> jugador = new ArrayList<Jugador>();
+		ObjectInputStream ois = null;
+		try {
+			System.out.println("Introduce el nombre del jugador: ");
+			nombre = Util.introducirCadena();
+
+			ois = new ObjectInputStream(new FileInputStream(fichUsuarios));
+			pos = Util.calculoFichero(fichUsuarios);
+
+			for (int i = 0; i < pos; i++) {
+				Jugador J1 = new Jugador();
+				J1 = (Jugador) ois.readObject();
+				if (J1.getNombre().equalsIgnoreCase(nombre)) {
+					jugador.remove(J1);
+				}
+			}
+			ois.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private static void listaEntrenamiento(File fichEquipo) {
+		// TODO Auto-generated method stub
+
+	}
 //omar
 	private static void menuJugador() {
 
