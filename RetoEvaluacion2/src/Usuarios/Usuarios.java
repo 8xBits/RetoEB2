@@ -45,9 +45,6 @@ public class Usuarios {
 
 	public void getDatos() {
 		System.out.println("Nombre: " + this.nombre);
-		System.out.println("Ususario: " + this.user);
-		System.out.println("Contraseña: " + this.contrasena);
-		
 	}
 	
 	public void setDatos() {
