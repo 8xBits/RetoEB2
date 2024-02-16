@@ -25,11 +25,13 @@ public class Main {
 			userType = Util.leerInt("Desea iniciar sesion 3=si/4=no", 3, 4);
 			if (userType == 3) {
 				logIn();
-				int menu;
+				int menu = 0;
 				switch (userType) {
 				case 0:
-					menuAdmin();
-
+					do {
+						menuAdmin();
+						seleccionAdmin(menu, fichEquipo, fichUsuarios);
+					} while (menu != 3);
 					break;
 				case 1:
 					menuEntrenador();
@@ -71,6 +73,7 @@ public class Main {
 		user = Util.introducirCadena();
 		System.out.print("Contraseña: ");
 		passwd = Util.introducirCadena();
+
 	}
 
 	private static void introducirEquipo(File fich) {
@@ -101,12 +104,57 @@ public class Main {
 
 	}
 
+	private static void introducirEntrenadores(File fich) {
+		int opc;
+		ObjectOutputStream oos = null;
+		try {
+			if (fich.exists()) {
+				oos = new MyObjectOutputStream(new FileOutputStream(fich, true));
+			} else {
+				oos = new ObjectOutputStream(new FileOutputStream(fich));
+			}
+
+			do {
+				Usuarios entrenador = new Entrenador();
+				entrenador.setDatos();
+				oos.writeObject(entrenador);
+				opc = Util.leerInt("¿Desea añadir mas entrenadores? 1=si/2=no", 1, 2);
+			} while (opc == 1);
+			oos.close();
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 //alder
 	private static void menuAdmin() {
 		System.out.println("MENU ADMIN");
 		System.out.println("1.- Introducir equipo");
 		System.out.println("2.- Introducir entrenador");
 		System.out.println("3.- Salir");
+	}
+
+	private static void seleccionAdmin(int menu, File fichEquipo, File fichUsuarios) {
+		System.out.println("Que desea hacer");
+		menu = Util.leerInt(1, 3);
+		Usuarios admin = new Admin();
+		switch (menu) {
+		case 1:
+			introducirEquipo(fichEquipo);
+			break;
+		case 2:
+			introducirEntrenadores(fichUsuarios);
+			break;
+		case 3:
+			System.out.println("Vuelva pronto " + admin.getUser());
+			break;
+		}
 	}
 
 //enzo
