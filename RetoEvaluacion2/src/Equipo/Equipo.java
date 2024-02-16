@@ -2,6 +2,7 @@ package Equipo;
 
 import java.util.ArrayList;
 import Entrenamiento.Entrenamiento;
+import Utilidades.Util;
 
 public class Equipo {
 
@@ -57,7 +58,23 @@ public class Equipo {
 	}
 
 
-    public void test(){
-        System.out.println("Testing github");
-    }
+
+	public void setDatosEquipo() {
+
+		System.out.println("Introduzca nombre del equipo :");
+		this.nombreEquipo=Util.introducirCadena();
+		System.out.println("Introduzca el estadio :");
+		this.estadio= Util.introducirCadena();
+		System.out.println("Introduzca titulos :");
+		this.titulos= Util.leerInt();
+	}
+	
+	
+	public void getDatosEquipo() {
+		System.out.println("--- Datos de la Categoria ---");
+		System.out.println("Nombre del equipo : " + this.nombreEquipo);
+		System.out.println("Estadio : " + this.estadio);
+		System.out.println("Titulos : " + this.titulos);
+		System.out.println("--- ---");
+	}
 }
