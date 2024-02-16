@@ -42,7 +42,7 @@ public class Main {
 				}
 			}
 		} while (userType != 4);
-	}
+	}// main
 
 	private static void crearAdmin(File fich) {
 		if (!fich.exists()) {
@@ -116,6 +116,34 @@ public class Main {
 
 //omar
 	private static void menuJugador() {
+		int opc;
+		do {
+			System.out.println("MENU Jugador");
+			System.out.println("1.- Combrobar dorsal (ver disponibles)");
+			System.out.println("2.- Ver info equipo ");
+			System.out.println("3.- Salir");
+			opc = Util.leerInt();
+			switch (opc) {
+			case 1:
+				comprobarDorsal();
+				break;
+			case 2:
+				verInfoEquipo();
+				break;
+			case 3:
+				System.out.println("Hasta pronto..");
+				break;
+			}
+
+		} while (opc != 3);
+	}
+
+	public static void comprobarDorsal() {
 
 	}
-}
+
+	public static void verInfoEquipo() {
+			
+	}
+
+}// class
