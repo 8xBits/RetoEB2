@@ -25,7 +25,7 @@ public class Main {
 			userType = Util.leerInt("Desea iniciar sesion 3=si/4=no", 3, 4);
 			if (userType == 3) {
 				logIn();
-			}
+				int menu;
 			switch (userType) {
 			case 0:
 				System.out.println("MENU ADMIN");
@@ -39,6 +39,7 @@ public class Main {
 				System.out.println("MENU JUGADOR");
 
 				break;
+			}
 			}
 		} while (userType != 4);
 	}
