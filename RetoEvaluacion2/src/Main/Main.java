@@ -14,19 +14,19 @@ import Utilidades.Util.MyObjectOutputStream;
 public class Main {
 
 	public static void main(String[] args) {
+		// usertype 0 es admin, el 1 es entrenador y el 2 jugador
 		int userType;
-		String user, passwd;
 		File fichEquipo = new File("equipo.dat");
 		File fichUsuarios = new File("usuarios.dat");
 
 		crearAdmin(fichUsuarios);
 
-		System.out.println("LOG IN");
-		System.out.print("User: ");
-		user = Util.introducirCadena();
-		System.out.print("Contraseña: ");
-		passwd = Util.introducirCadena();
-
+		do {
+			userType = Util.leerInt("Desea iniciar sesion 3=si/4=no", 3, 4);
+			if (userType == 3) {
+				logIn();
+			}
+		} while (userType != 4);
 	}
 
 	private static void crearAdmin(File fich) {
@@ -48,6 +48,16 @@ public class Main {
 		}
 	}
 
+	private static void logIn() {
+		String user, passwd;
+
+		System.out.println("LOG IN");
+		System.out.print("User: ");
+		user = Util.introducirCadena();
+		System.out.print("Contraseña: ");
+		passwd = Util.introducirCadena();
+	}
+
 	private static void introducirEquipo(File fich) {
 		int opc;
 		ObjectOutputStream oos = null;
@@ -64,7 +74,7 @@ public class Main {
 				Equipo equipo = new Equipo();
 				equipo.setDatos();
 				oos.writeObject(equipo);
-				opc = Util.leerInt("¿Más alumnos? 1=si/2=no", 1, 2);
+				opc = Util.leerInt("¿Desea añadir mas equipos? 1=si/2=no", 1, 2);
 			} while (opc == 1);
 			try {
 				oos.close();
