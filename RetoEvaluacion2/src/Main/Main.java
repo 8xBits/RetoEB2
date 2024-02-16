@@ -43,13 +43,15 @@ public class Main {
 					seleccionEntrenador(menu, fichEquipo, fichUsuarios);
 					break;
 				case 2:
-					menuJugador();
+					menuJugador(fichEquipo, fichUsuarios);
 
 					break;
 				}
 			}
 		} while (userType != 4);
-	}
+	}// main
+	
+	
 
 	private static void crearAdmin(File fich) {
 		if (!fich.exists()) {
@@ -287,9 +289,127 @@ public class Main {
 	}
 
 //omar
-	private static void menuJugador() {
+	private static void menuJugador(File fichUsuarios,File fichEquipo) {
+		int opc;
+		do {
+			System.out.println("MENU Jugador");
+			System.out.println("1.- Combrobar dorsal (ver disponibles)");
+			System.out.println("2.- Ver info equipo ");
+			System.out.println("3.- Salir");
+			opc = Util.leerInt();
+			switch (opc) {
+			case 1:
+				comprobarDorsal(fichUsuarios);
+				break;
+			case 2:
+				verInfoEquipo(fichEquipo);
+				break;
+			case 3:
+				System.out.println("Hasta pronto..");
+				break;
+			}
+
+		} while (opc != 3);
+	}
+
+	public static void comprobarDorsal(File fich) {
+		int choice;
+		Jugador jugador= new Jugador();
+		
+		ArrayList<Integer> dorsalNoLibre= new ArrayList<>();
+		ArrayList<Jugador> jugadorList= new ArrayList<>();
+
+			fileToArray(fich,jugadorList);
+		for(Jugador jug :jugadorList) {
+			if(jug.getNombreEquipo().equalsIgnoreCase(jugador.getNombreEquipo())) {
+				dorsalNoLibre.add(jug.getDorsal());
+			}
+		}
+		System.out.println("Dorsales Libres :  " );
+		for(int i=0;i<26;i++) {
+			if(!dorsalNoLibre.contains(i)) {
+				System.out.println(i+" " );
+			}
+		}
+		
+		do {
+			System.out.println("Elege un dorsal libre que te gusta :");
+			choice = Util.leerInt();
+		} while (dorsalNoLibre.contains(choice) );
 
 	}
+
+
+	public static void verInfoEquipo(File fich) {
+		ArrayList<Equipo> equipoList= new ArrayList<>();
+		Equipo equipo= new Equipo();
+		fileEquipoToArray(fich,equipoList);
+		for(Equipo equip :equipoList) {
+			if(equip.getNombreEquipo().equalsIgnoreCase(equipo.getNombreEquipo())) {
+				equip.getDatosEquipo();
+			}
+			
+		}
+
+	}
+	
+	  private static void arrayToFile(ArrayList<Jugador> empList, File fich) {
+	        ObjectOutputStream oos = null;
+	        try {
+	            if (fich.exists()) {
+	                fich.delete();
+	            }
+	            oos = new ObjectOutputStream(new FileOutputStream(fich));
+	            for (Jugador emp : empList) {
+	                oos.writeObject(emp);
+	            }
+	            empList.clear();
+	            oos.close();
+
+	        } catch (FileNotFoundException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        } catch (IOException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        }
+	    }
+	  private static void fileEquipoToArray(File fich, ArrayList<Equipo> empList) {
+	        if (fich.exists()) {
+	            ObjectInputStream ois;
+	            try {
+	                ois = new ObjectInputStream(new FileInputStream(fich));
+	                int cuantos = Util.calculoFichero(fich);
+	                for (int i = 0; i < cuantos; i++) {
+	                	Equipo emp = (Equipo) ois.readObject();
+	                    empList.add(emp);
+	                }
+	                ois.close();
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            } catch (ClassNotFoundException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
+	    private static void fileToArray(File fich, ArrayList<Jugador> empList) {
+	        if (fich.exists()) {
+	            ObjectInputStream ois;
+	            try {
+	                ois = new ObjectInputStream(new FileInputStream(fich));
+	                int cuantos = Util.calculoFichero(fich);
+	                for (int i = 0; i < cuantos; i++) {
+	                	Jugador emp = (Jugador) ois.readObject();
+	                    empList.add(emp);
+	                }
+	                ois.close();
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            } catch (ClassNotFoundException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
 
 	private static int consulta(File fich, String user, String passwd) {
 		ObjectInputStream ois = null;
@@ -360,4 +480,6 @@ public class Main {
 		}
 		return userType;
 	}
-}
+
+
+}// class
