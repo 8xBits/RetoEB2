@@ -9,7 +9,7 @@ import Equipo.Equipo;
 import Entrenamiento.Entrenamiento;
 import Usuarios.*;
 import Utilidades.Util;
-import Utilidades.Util.MyObjectOutputStream;
+import Utilidades.MyObjectOutputStream;
 
 public class Main {
 
@@ -25,6 +25,20 @@ public class Main {
 			userType = Util.leerInt("Desea iniciar sesion 3=si/4=no", 3, 4);
 			if (userType == 3) {
 				logIn();
+			}
+			switch (userType) {
+			case 0:
+				System.out.println("MENU ADMIN");
+
+				break;
+			case 1:
+				System.out.println("MENU ENTRENADOR");
+
+				break;
+			case 2:
+				System.out.println("MENU JUGADOR");
+
+				break;
 			}
 		} while (userType != 4);
 	}
@@ -63,25 +77,19 @@ public class Main {
 		ObjectOutputStream oos = null;
 		try {
 			if (fich.exists()) {
-				System.out.println("El fichero ya existe, se añadiran los alumnos al final");
 				oos = new MyObjectOutputStream(new FileOutputStream(fich, true));
 			} else {
-				System.out.println("Fichero nuevo");
 				oos = new ObjectOutputStream(new FileOutputStream(fich));
 			}
 
 			do {
 				Equipo equipo = new Equipo();
-				equipo.setDatos();
+				equipo.setDatosEquipo();
 				oos.writeObject(equipo);
 				opc = Util.leerInt("¿Desea añadir mas equipos? 1=si/2=no", 1, 2);
 			} while (opc == 1);
-			try {
-				oos.close();
+			oos.close();
 
-			} catch (IOException e) {
-				System.out.println("Error al cerrar el fichero");
-			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
