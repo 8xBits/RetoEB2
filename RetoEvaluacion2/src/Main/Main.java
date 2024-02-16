@@ -26,20 +26,20 @@ public class Main {
 			if (userType == 3) {
 				logIn();
 				int menu;
-			switch (userType) {
-			case 0:
-				System.out.println("MENU ADMIN");
+				switch (userType) {
+				case 0:
+					menuAdmin();
 
-				break;
-			case 1:
-				System.out.println("MENU ENTRENADOR");
+					break;
+				case 1:
+					menuEntrenador();
 
-				break;
-			case 2:
-				System.out.println("MENU JUGADOR");
+					break;
+				case 2:
+					menuJugador();
 
-				break;
-			}
+					break;
+				}
 			}
 		} while (userType != 4);
 	}
@@ -98,6 +98,24 @@ public class Main {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+	}
+
+//alder
+	private static void menuAdmin() {
+		System.out.println("MENU ADMIN");
+		System.out.println("1.- Introducir equipo");
+		System.out.println("2.- Introducir entrenador");
+		System.out.println("3.- Salir");
+	}
+
+//enzo
+	private static void menuEntrenador() {
+
+	}
+
+//omar
+	private static void menuJugador() {
 
 	}
 }
