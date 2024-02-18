@@ -19,11 +19,11 @@ public class Equipo implements Serializable {
 		this.titulos = 0;
 	}
 
-	public Equipo(String nombreEquipo, String estadio, int titulos, ArrayList<Entrenamiento> listaEntrenamiento) {
+	public Equipo(String nombreEquipo, String estadio, int titulos) {
 		this.nombreEquipo = nombreEquipo;
 		this.estadio = estadio;
 		this.titulos = titulos;
-		this.listaEntrenamiento = listaEntrenamiento;
+		this.listaEntrenamiento = new ArrayList<>();;
 	}
 
 	public String getNombreEquipo() {

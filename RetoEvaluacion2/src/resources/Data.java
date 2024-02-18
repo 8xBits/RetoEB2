@@ -9,11 +9,11 @@ import java.util.ArrayList;
 public class Data {
 
     public void fillDataEquipos(){
-        Equipo athleticBilbao = new Equipo("Athletic Club de Bilbao", "San Mamés", 8, new ArrayList<>());
-        Equipo atleticoMadrid = new Equipo("Atlético Madrid", "Wanda Metropolitano", 11, new ArrayList<>());
-        Equipo barcelona = new Equipo("Barcelona", "Camp Nou", 26, new ArrayList<>());
-        Equipo realMadrid = new Equipo("Real Madrid", "Santiago Bernabéu", 34, new ArrayList<>());
-        Equipo sevilla = new Equipo("Sevilla", "Ramón Sánchez-Pizjuán", 1, new ArrayList<>());
+        Equipo athleticBilbao = new Equipo("Athletic Club de Bilbao", "San Mamés", 8);
+        Equipo atleticoMadrid = new Equipo("Atlético Madrid", "Wanda Metropolitano", 11);
+        Equipo barcelona = new Equipo("Barcelona", "Camp Nou", 26);
+        Equipo realMadrid = new Equipo("Real Madrid", "Santiago Bernabéu", 34);
+        Equipo sevilla = new Equipo("Sevilla", "Ramón Sánchez-Pizjuán", 1);
     }
     public void fillDataEntrenamiento(){
         ArrayList<Entrenamiento>  athleticBilbaoEntr= new ArrayList<>();
