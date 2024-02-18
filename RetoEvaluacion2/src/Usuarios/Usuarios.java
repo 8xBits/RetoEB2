@@ -2,7 +2,9 @@ package Usuarios;
 
 import Utilidades.Util;
 
-public class Usuarios {
+import java.io.Serializable;
+
+public class Usuarios implements Serializable {
 	protected String nombre;
 	protected String user;
 	protected String contrasena;

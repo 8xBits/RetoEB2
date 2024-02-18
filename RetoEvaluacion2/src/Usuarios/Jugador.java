@@ -2,7 +2,9 @@ package Usuarios;
 
 import Utilidades.Util;
 
-public class Jugador extends Usuarios {
+import java.io.Serializable;
+
+public class Jugador extends Usuarios implements Serializable {
 	private String nombreEquipo;
 	private int dorsal;
 	private int goles;

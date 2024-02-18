@@ -1,10 +1,11 @@
 package Equipo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import Entrenamiento.Entrenamiento;
 import Utilidades.Util;
 
-public class Equipo {
+public class Equipo implements Serializable {
 
 	private String nombreEquipo;
 	private String estadio;
@@ -14,7 +15,7 @@ public class Equipo {
 	public Equipo() {
 		this.nombreEquipo = "";
 		this.estadio = "";
-		this.listaEntrenamiento = null;
+		this.listaEntrenamiento = new ArrayList<>();
 		this.titulos = 0;
 	}
 
@@ -57,7 +58,9 @@ public class Equipo {
 		this.listaEntrenamiento = listaEntrenamiento;
 	}
 
-
+	public void addEntrenamiento(Entrenamiento entrenamiento){
+		listaEntrenamiento.add(entrenamiento);
+	}
 
 	public void setDatosEquipo() {
 
@@ -71,10 +74,10 @@ public class Equipo {
 	
 	
 	public void getDatosEquipo() {
-		System.out.println("--- Datos de la Categoria ---");
+		System.out.println("-----Datos del equipo-----");
 		System.out.println("Nombre del equipo : " + this.nombreEquipo);
 		System.out.println("Estadio : " + this.estadio);
 		System.out.println("Titulos : " + this.titulos);
-		System.out.println("--- ---");
+
 	}
 }
