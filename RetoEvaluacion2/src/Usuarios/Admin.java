@@ -6,6 +6,7 @@ public class Admin extends Usuarios {
 	public Admin(String nombre, String user, String contraseña, int codAdmin) {
 		super(nombre, user, contraseña);
 		this.codAdmin = codAdmin;
+		
 	}
 
 	public Admin() {
