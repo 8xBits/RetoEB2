@@ -1,15 +1,11 @@
 package Utilidades;
 
-import java.io.BufferedReader;
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 
 public class Util {
 
@@ -267,6 +263,72 @@ public class Util {
 			}
 		}
 		return cont;
+	}
+
+	// ** added to facilitate working with files and LocalDateTime
+	public static <T> void arrayToFile(ArrayList<T> miList, File fich) {
+		ObjectOutputStream oos = null;
+		try {
+			if (fich.exists()) {
+				fich.delete();
+			}
+			oos = new ObjectOutputStream(new FileOutputStream(fich));
+			for (T obj : miList) {
+				oos.writeObject(obj);
+			}
+			miList.clear();
+			oos.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public static <T> void fileToArray(File fich, ArrayList<T> miList) {
+		if (fich.exists()) {
+			ObjectInputStream ois;
+			try {
+				ois = new ObjectInputStream(new FileInputStream(fich));
+
+                int cuantos = calculoFichero(fich);
+                for (int i = 0; i < cuantos; i++) {
+                    T obj = (T) ois.readObject();
+					miList.add(obj);
+                }
+
+				/*T obj = (T) ois.readObject();
+				while (obj != null) {
+					miList.add(obj);
+					obj = (T) ois.readObject();
+					miList.add(obj);
+				}*/
+				ois.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public static LocalDateTime leerFechaAMDH() {
+		boolean error;
+		LocalDateTime date = null;
+		String dateString;
+		DateTimeFormatter formateador = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+		do {
+			error = false;
+			dateString = introducirCadena();
+			try {
+				date = LocalDateTime.parse(dateString, formateador);
+			} catch (DateTimeParseException e) {
+				System.out.println("Error, introduce una fecha en formato (aaaa/mm/dd HH:mm)");
+				error = true;
+			}
+		} while (error);
+		return date;
 	}
 
 }
