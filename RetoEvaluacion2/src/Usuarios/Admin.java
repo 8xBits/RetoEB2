@@ -1,6 +1,12 @@
 package Usuarios;
 
-public class Admin extends Usuarios {
+import java.io.Serializable;
+
+public class Admin extends Usuarios  implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int codAdmin;
 
 	public Admin(String nombre, String user, String contraseña, int codAdmin) {

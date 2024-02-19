@@ -5,6 +5,10 @@ import Utilidades.Util;
 import java.io.Serializable;
 
 public class Entrenador extends Usuarios implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String nombreEquipo;
 	private CargoEntrenador cargo;
 
@@ -55,7 +59,7 @@ public class Entrenador extends Usuarios implements Serializable {
 		do {
 			System.out.println(
 					"Introduzca el cargo del entrenador: (Primer entrenador / Segundo entrenador/ Preparador fisico)");
-			str = (String) Util.introducirCadena();
+			str = Util.introducirCadena();
 			try {
 				this.cargo = CargoEntrenador.valueOf(str.toUpperCase());
 				error = false;

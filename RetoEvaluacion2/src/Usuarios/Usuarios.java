@@ -5,6 +5,10 @@ import Utilidades.Util;
 import java.io.Serializable;
 
 public class Usuarios implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected String nombre;
 	protected String user;
 	protected String contrasena;

@@ -7,6 +7,10 @@ import Utilidades.Util;
 
 public class Equipo implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String nombreEquipo;
 	private String estadio;
 	private int titulos;
@@ -79,5 +83,10 @@ public class Equipo implements Serializable {
 		System.out.println("Estadio : " + this.estadio);
 		System.out.println("Titulos : " + this.titulos);
 
+	}
+
+	@Override
+	public String toString() {
+		return super.toString();
 	}
 }

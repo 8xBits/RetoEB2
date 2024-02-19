@@ -2,13 +2,18 @@ package Entrenamiento;
 
 import Utilidades.Util;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
-public class Entrenamiento {
+public class Entrenamiento implements Serializable {
 
-    private LocalDateTime fetchaHoraInicio;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private LocalDateTime fetchaHoraInicio;
     private LocalDateTime fetchaHoraFin;
     private String material;
    // private ArrayList<String> materiales;
@@ -67,8 +72,9 @@ public class Entrenamiento {
     }
     public void getDatosEntrenamiento() {
         System.out.println("-----Datos de Entrenamiento-----");
+        System.out.println("Fecha Inicio : " + this.fetchaHoraInicio);
+        System.out.println("Duraccion : " + getDuracion()+ "h");
         System.out.println("Material : " + this.material);
-        System.out.println("Duraccion : " + getDuracion());
     }
 
 

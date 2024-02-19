@@ -8,7 +8,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Formatter;
 
 import Equipo.Equipo;
 import Entrenamiento.Entrenamiento;
@@ -36,7 +40,7 @@ public class Main {
 			if (opcion == 3) {
 				Usuarios connectedUser = consulta(fichUsuarios);
 				userType = logIn(connectedUser);
-				int menu = 0;
+				//int menu = 0;
 				switch (userType) {
 				case -1:
 					// just debuging
@@ -86,11 +90,11 @@ public class Main {
 		if (usuario == null) {
 			System.out.println("El usuario y la contraseña introducidos no coinciden o no existen");
 		} else if (usuario instanceof Admin) {
-			return 0;
+			userType = 0;
 		} else if (usuario instanceof Entrenador) {
-			return 1;
+			userType = 1;
 		} else if (usuario instanceof Jugador) {
-			return 2;
+			userType = 2;
 		}
 		return userType;
 	}
@@ -204,7 +208,7 @@ public class Main {
 			switch (menu) {
 
 			case 1:
-				programarEntrenamiento(fichEquipo, fichUsuarios);
+				programarEntrenamiento(fichEquipo,(Entrenador) entrenadorConectado);
 				break;
 			case 2:
 				anadirJugadores(fichUsuarios);
@@ -216,7 +220,7 @@ public class Main {
 				eliminarJugadores(fichUsuarios);
 				break;
 			case 5:
-				listaEntrenamiento(fichEquipo);
+				listaEntrenamiento(fichEquipo,(Entrenador) entrenadorConectado );
 				break;
 			case 0:
 				launchNewSession(fichUsuarios, fichEquipo);
@@ -227,9 +231,31 @@ public class Main {
 
 	}
 
-	private static void programarEntrenamiento(File fichEquipo, File fichUsuarios) {
-		// TODO Auto-generated method4 stub
+	private static void programarEntrenamiento(File fichEquipo, Entrenador entrenador) {
+		ArrayList<Equipo> equipos= new ArrayList<>();
+		Util.fileToArray(fichEquipo,equipos);
+		
+		for(Equipo euip : equipos){
+			if(euip.getNombreEquipo().equalsIgnoreCase(entrenador.getNombreEquipo())){
+				
+				Entrenamiento ent0 = new Entrenamiento(LocalDateTime.of(2024, 2, 18, 10, 0), LocalDateTime.of(2024, 2, 18, 12, 30) ,"test Material");
+				//Entrenamiento ent1 = new Entrenamiento(LocalDateTime.of(2024, 2, 20, 10, 0), LocalDateTime.of(2024, 2, 20, 12, 30) ,"test Material");
+				//Entrenamiento ent2 = new Entrenamiento(LocalDateTime.of(2024, 2, 23, 18, 30), LocalDateTime.of(2024, 2, 23, 21, 30) ,"Material2");
+				//euip.addEntrenamiento(ent1);
+				euip.addEntrenamiento(ent0);
+			}
 
+		}
+		for(Equipo equip2 : equipos){
+			if(entrenador.getNombreEquipo().equalsIgnoreCase(equip2.getNombreEquipo())){
+				for(Entrenamiento en : equip2.getListaEntrenamiento()){
+					en.getDatosEntrenamiento();
+				}
+			}
+		}
+		System.out.println("Now adding to file");
+		
+		Util.arrayToFile(equipos,fichEquipo);
 	}
 
 	private static void anadirJugadores(File fichUsuarios) {
@@ -293,9 +319,26 @@ public class Main {
 		}
 	}
 
-	private static void listaEntrenamiento(File fichEquipo) {
-		// TODO Auto-generated method stub
+	private static void listaEntrenamiento(File fichEquipo, Entrenador entrenador) {
+		entrenador.getDatos();
+		LocalDateTime myDate = LocalDateTime.now();
+		ArrayList<Equipo> equipoList= new ArrayList<>();
+		Util.fileToArray(fichEquipo,equipoList);
+		System.out.println(equipoList.size());
+			for(Equipo equipo : equipoList){
+				System.out.println(equipo);
+				if(equipo.getNombreEquipo().equalsIgnoreCase(entrenador.getNombreEquipo())){
+					
+					for(Entrenamiento ent : equipo.getListaEntrenamiento()){
+						//System.out.println(equipo.getListaEntrenamiento().size());
 
+						if(ent.getFetchaHoraInicio().isAfter(myDate)) {
+							ent.getDatosEntrenamiento();
+						}
+					
+					}
+				}
+			}
 	}
 
 	// omar
