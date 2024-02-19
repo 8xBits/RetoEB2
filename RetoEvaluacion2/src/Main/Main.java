@@ -397,8 +397,7 @@ public class Main {
 						if (aux.getUser().equalsIgnoreCase(user)) {
 							if (aux.getContraseña().equalsIgnoreCase(passwd)) {
 								// just for testing
-								System.out.println(
-										("The user is : " + aux.getUser() + " Password is :" + aux.getContraseña()));
+								//System.out.println(("The user is : " + aux.getUser() + " Password is :" + aux.getContraseña()));
 								return aux;
 							}
 						}
