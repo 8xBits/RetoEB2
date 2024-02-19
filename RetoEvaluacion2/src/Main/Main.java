@@ -40,7 +40,7 @@ public class Main {
 			if (opcion == 3) {
 				Usuarios connectedUser = consulta(fichUsuarios);
 				userType = logIn(connectedUser);
-				//int menu = 0;
+				// int menu = 0;
 				switch (userType) {
 				case -1:
 					// just debuging
@@ -208,7 +208,7 @@ public class Main {
 			switch (menu) {
 
 			case 1:
-				programarEntrenamiento(fichEquipo,(Entrenador) entrenadorConectado);
+				programarEntrenamiento(fichEquipo, (Entrenador) entrenadorConectado);
 				break;
 			case 2:
 				anadirJugadores(fichUsuarios);
@@ -220,7 +220,7 @@ public class Main {
 				eliminarJugadores(fichUsuarios);
 				break;
 			case 5:
-				listaEntrenamiento(fichEquipo,(Entrenador) entrenadorConectado );
+				listaEntrenamiento(fichEquipo, (Entrenador) entrenadorConectado);
 				break;
 			case 0:
 				launchNewSession(fichUsuarios, fichEquipo);
@@ -230,32 +230,29 @@ public class Main {
 		} while (menu != 0);
 
 	}
-
+	//done 
 	private static void programarEntrenamiento(File fichEquipo, Entrenador entrenador) {
-		ArrayList<Equipo> equipos= new ArrayList<>();
-		Util.fileToArray(fichEquipo,equipos);
-		
-		for(Equipo euip : equipos){
-			if(euip.getNombreEquipo().equalsIgnoreCase(entrenador.getNombreEquipo())){
-				
-				Entrenamiento ent0 = new Entrenamiento(LocalDateTime.of(2024, 2, 18, 10, 0), LocalDateTime.of(2024, 2, 18, 12, 30) ,"test Material");
-				//Entrenamiento ent1 = new Entrenamiento(LocalDateTime.of(2024, 2, 20, 10, 0), LocalDateTime.of(2024, 2, 20, 12, 30) ,"test Material");
-				//Entrenamiento ent2 = new Entrenamiento(LocalDateTime.of(2024, 2, 23, 18, 30), LocalDateTime.of(2024, 2, 23, 21, 30) ,"Material2");
-				//euip.addEntrenamiento(ent1);
-				euip.addEntrenamiento(ent0);
-			}
-
-		}
-		for(Equipo equip2 : equipos){
-			if(entrenador.getNombreEquipo().equalsIgnoreCase(equip2.getNombreEquipo())){
-				for(Entrenamiento en : equip2.getListaEntrenamiento()){
-					en.getDatosEntrenamiento();
+		// just testing
+		ArrayList<Equipo> equipos = new ArrayList<>();
+		Util.fileToArray(fichEquipo, equipos);
+		for (Equipo equipo : equipos) {
+			if (equipo.getNombreEquipo().equalsIgnoreCase(entrenador.getNombreEquipo())) {
+				// Entrenamiento ent0 = new Entrenamiento(LocalDateTime.of(2024, 2, 18, 10, 0),
+				// LocalDateTime.of(2024, 2, 18, 12, 30) ,"test Material");
+				// Entrenamiento ent1 = new Entrenamiento(LocalDateTime.of(2024, 2, 20, 10, 0),
+				// LocalDateTime.of(2024, 2, 20, 12, 30) ,"test Material");
+				// Entrenamiento ent2 = new Entrenamiento(LocalDateTime.of(2024, 2, 23, 18, 30),
+				// LocalDateTime.of(2024, 2, 23, 21, 30) ,"Material2");
+				// euip.addEntrenamiento(ent1);
+				// euip.addEntrenamiento(ent0);
+				for (Entrenamiento entra : equipo.getListaEntrenamiento()) {
+					entra.setDatosEntrenamiento();
 				}
+
 			}
 		}
-		System.out.println("Now adding to file");
-		
-		Util.arrayToFile(equipos,fichEquipo);
+
+		Util.arrayToFile(equipos, fichEquipo);
 	}
 
 	private static void anadirJugadores(File fichUsuarios) {
@@ -318,27 +315,26 @@ public class Main {
 			e.printStackTrace();
 		}
 	}
-
+	// done just to give a good format 
 	private static void listaEntrenamiento(File fichEquipo, Entrenador entrenador) {
-		entrenador.getDatos();
+		// entrenador.getDatos();
 		LocalDateTime myDate = LocalDateTime.now();
-		ArrayList<Equipo> equipoList= new ArrayList<>();
-		Util.fileToArray(fichEquipo,equipoList);
+		ArrayList<Equipo> equipoList = new ArrayList<>();
+		Util.fileToArray(fichEquipo, equipoList);
 		System.out.println(equipoList.size());
-			for(Equipo equipo : equipoList){
-				System.out.println(equipo);
-				if(equipo.getNombreEquipo().equalsIgnoreCase(entrenador.getNombreEquipo())){
-					
-					for(Entrenamiento ent : equipo.getListaEntrenamiento()){
-						//System.out.println(equipo.getListaEntrenamiento().size());
+		for (Equipo equipo : equipoList) {
 
-						if(ent.getFetchaHoraInicio().isAfter(myDate)) {
-							ent.getDatosEntrenamiento();
-						}
-					
+			if (equipo.getNombreEquipo().equalsIgnoreCase(entrenador.getNombreEquipo())) {
+				for (Entrenamiento ent : equipo.getListaEntrenamiento()) {
+					// System.out.println(equipo.getListaEntrenamiento().size());
+					if (ent.getFetchaHoraInicio().isAfter(myDate)) {
+						ent.getDatosEntrenamiento();
+						System.out.println("Lugar : " + equipo.getEstadio());
 					}
+
 				}
 			}
+		}
 	}
 
 	// omar
@@ -347,6 +343,7 @@ public class Main {
 		System.out.println("1.- Combrobar dorsal (ver disponibles)");
 		System.out.println("2.- Ver info equipo ");
 		System.out.println("3.- Menu Principal");
+		System.out.println("4.- Cambiar contraseña ");
 	}
 
 	private static void seleccionJugador(File fichUsuarios, File fichEquipo, Jugador jugadorConectado) {
@@ -440,7 +437,8 @@ public class Main {
 						if (aux.getUser().equalsIgnoreCase(user)) {
 							if (aux.getContraseña().equalsIgnoreCase(passwd)) {
 								// just for testing
-								//System.out.println(("The user is : " + aux.getUser() + " Password is :" + aux.getContraseña()));
+								// System.out.println(("The user is : " + aux.getUser() + " Password is :" +
+								// aux.getContraseña()));
 								return aux;
 							}
 						}

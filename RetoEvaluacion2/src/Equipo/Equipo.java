@@ -27,7 +27,8 @@ public class Equipo implements Serializable {
 		this.nombreEquipo = nombreEquipo;
 		this.estadio = estadio;
 		this.titulos = titulos;
-		this.listaEntrenamiento = new ArrayList<>();;
+		this.listaEntrenamiento = new ArrayList<>();
+		;
 	}
 
 	public String getNombreEquipo() {
@@ -62,21 +63,20 @@ public class Equipo implements Serializable {
 		this.listaEntrenamiento = listaEntrenamiento;
 	}
 
-	public void addEntrenamiento(Entrenamiento entrenamiento){
+	public void addEntrenamiento(Entrenamiento entrenamiento) {
 		listaEntrenamiento.add(entrenamiento);
 	}
 
 	public void setDatosEquipo() {
 
 		System.out.println("Introduzca nombre del equipo :");
-		this.nombreEquipo=Util.introducirCadena();
+		this.nombreEquipo = Util.introducirCadena();
 		System.out.println("Introduzca el estadio :");
-		this.estadio= Util.introducirCadena();
+		this.estadio = Util.introducirCadena();
 		System.out.println("Introduzca titulos :");
-		this.titulos= Util.leerInt();
+		this.titulos = Util.leerInt();
 	}
-	
-	
+
 	public void getDatosEquipo() {
 		System.out.println("-----Datos del equipo-----");
 		System.out.println("Nombre del equipo : " + this.nombreEquipo);
