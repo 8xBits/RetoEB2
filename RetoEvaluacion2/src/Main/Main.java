@@ -230,7 +230,8 @@ public class Main {
 		} while (menu != 0);
 
 	}
-	//done 
+
+	// done
 	private static void programarEntrenamiento(File fichEquipo, Entrenador entrenador) {
 		// just testing
 		ArrayList<Equipo> equipos = new ArrayList<>();
@@ -315,7 +316,8 @@ public class Main {
 			e.printStackTrace();
 		}
 	}
-	// done just to give a good format 
+
+	// done just to give a good format
 	private static void listaEntrenamiento(File fichEquipo, Entrenador entrenador) {
 		// entrenador.getDatos();
 		LocalDateTime myDate = LocalDateTime.now();
@@ -344,6 +346,7 @@ public class Main {
 		System.out.println("2.- Ver info equipo ");
 		System.out.println("3.- Menu Principal");
 		System.out.println("4.- Cambiar contraseña ");
+		System.out.println("5.- Goleador del equipo ");
 	}
 
 	private static void seleccionJugador(File fichUsuarios, File fichEquipo, Jugador jugadorConectado) {
@@ -352,7 +355,7 @@ public class Main {
 		int opc;
 		do {
 			menuJugador();
-			opc = Util.leerInt("Elege una opcion", 1, 3);
+			opc = Util.leerInt("Elege una opcion", 1, 5);
 			switch (opc) {
 			case 1:
 				comprobarDorsal(fichUsuarios, jugadorConectado);
@@ -361,12 +364,18 @@ public class Main {
 				verInfoEquipo(fichEquipo, jugadorConectado);
 				break;
 			case 3:
+				changeMyPassword(fichUsuarios, jugadorConectado);
+				break;
+			case 4:
+				topScorerPlayerOfTeam(fichUsuarios, jugadorConectado);
+				break;
+			case 5:
 				System.out.println("Hasta pronto " + jugadorConectado.getNombre());
 				// menuPrincipal();
 				launchNewSession(fichUsuarios, fichEquipo);
 				break;
 			}
-		} while (opc != 3);
+		} while (opc != 6);
 	}
 
 	public static void comprobarDorsal(File fich, Jugador jugadorConectado) {
@@ -415,6 +424,58 @@ public class Main {
 			if (equip.getNombreEquipo().equalsIgnoreCase(jugadorConectado.getNombreEquipo())) {
 				equip.getDatosEquipo();
 			}
+		}
+	}
+
+	// this function is working with all users now
+	public static void changeMyPassword(File fich, Jugador jugadorConectado) {
+		String strOldPass, strNewPass, strNewPass2;
+		ArrayList<Usuarios> userList = new ArrayList<>();
+
+		Util.fileToArray(fich, userList);
+		for (Usuarios userFromList : userList) {
+			// if (userConnect instanceof Jugador) {
+			if (jugadorConectado.getUser().equals(userFromList.getUser())) {
+				System.out.println("Introduce tu antigua contraseña :");
+				strOldPass = Util.introducirCadena();
+				if (userFromList.getContraseña().equals(strOldPass)) {
+					System.out.println("Introduce tu nueva contraseña :");
+					strNewPass = Util.introducirCadena();
+					System.out.println("ReIntroduce tu nueva contraseña :");
+					strNewPass2 = Util.introducirCadena();
+					if (strNewPass.equals(strNewPass2)) {
+						userFromList.setContraseña(strNewPass);
+					}
+				}
+
+			}
+			// }
+		}
+		Util.arrayToFile(userList, fich);
+	}
+
+	public static void topScorerPlayerOfTeam(File fich, Jugador jugadorConectado) {
+		int max=0,pos=-1;
+		boolean found=false;
+		ArrayList<Usuarios> userList = new ArrayList<>();
+
+		Util.fileToArray(fich, userList);
+		for (Usuarios userFromList : userList) {
+			if (jugadorConectado.getUser().equals(userFromList.getUser())) {
+				if (userFromList instanceof Jugador) {
+				if (((Jugador) userFromList).getGoles() > max) {
+					max=((Jugador) userFromList).getGoles();
+					pos=userList.indexOf(userFromList);
+					found=true;
+				}
+			 }
+			}
+		}
+		if(!found) {
+			System.out.println("No one is top Scorer for :"+jugadorConectado.getNombreEquipo());
+		}else {
+			System.out.println("The top Scorer for : "+jugadorConectado.getNombreEquipo() + " is :" );
+			 ((Jugador) userList.get(pos)).getDatos();
 		}
 	}
 
