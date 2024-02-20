@@ -349,9 +349,32 @@ public class Main {
     }
 
     private static void comprobarInfoJugador(File fichUsuarios) {
-        // TODO Auto-generated method stub
+    	int pos = 0;
+		String username;
+		ObjectInputStream ois = null;
+		try {
+			System.out.println("Introduce el username del jugador que deseas ver: ");
+			username = Util.introducirCadena();
 
-    }
+			ois = new ObjectInputStream(new FileInputStream(fichUsuarios));
+			pos = Util.calculoFichero(fichUsuarios);
+
+			for (int i = 0; i < pos; i++) {
+				Usuarios user = (Usuarios) ois.readObject();
+				if (user instanceof Jugador && !user.getUser().equalsIgnoreCase(username)) {
+					user.getDatos();
+				}
+			}
+			ois.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 
     private static void eliminarJugadores(File fichUsuarios) {
         int pos = 0;

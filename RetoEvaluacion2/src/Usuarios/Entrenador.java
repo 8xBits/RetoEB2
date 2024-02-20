@@ -10,91 +10,81 @@ import Equipo.Equipo;
 import java.util.ArrayList;
 
 public class Entrenador extends Usuarios implements Serializable {
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
-    private String nombreEquipo;
-    private CargoEntrenador cargo;
 
-    public Entrenador(String nombre, String user, String contraseña, String nombreEquipo, CargoEntrenador cargo) {
-        super(nombre, user, contraseña);
-        this.nombreEquipo = nombreEquipo;
-        this.cargo = cargo;
-    }
+	private static final long serialVersionUID = 1L;
+	private String nombreEquipo;
+	private CargoEntrenador cargo;
 
-    public Entrenador() {
-        super();
-        this.nombreEquipo = "";
-        this.cargo = null;
-    }
+	public Entrenador(String nombre, String user, String contraseña, String nombreEquipo, CargoEntrenador cargo) {
+		super(nombre, user, contraseña);
+		this.nombreEquipo = nombreEquipo;
+		this.cargo = cargo;
+	}
 
-    public String getNombreEquipo() {
-        return nombreEquipo;
-    }
+	public Entrenador() {
+		super();
+		this.nombreEquipo = "";
+		this.cargo = null;
+	}
 
-    public void setNombreEquipo(String nombreEquipo) {
-        this.nombreEquipo = nombreEquipo;
-    }
+	public String getNombreEquipo() {
+		return nombreEquipo;
+	}
 
-    public CargoEntrenador getCargo() {
-        return cargo;
-    }
+	public void setNombreEquipo(String nombreEquipo) {
+		this.nombreEquipo = nombreEquipo;
+	}
 
-    public void setCargo(CargoEntrenador cargo) {
-        this.cargo = cargo;
-    }
+	public CargoEntrenador getCargo() {
+		return cargo;
+	}
 
-    public void getDatos() {
+	public void setCargo(CargoEntrenador cargo) {
+		this.cargo = cargo;
+	}
 
-        super.getDatos();
-        System.out.println("Nombre del equipo: " + this.nombreEquipo);
-        System.out.println("Cargo: " + this.cargo);
+	public void getDatos() {
 
-    }
+		super.getDatos();
+		System.out.println("Nombre del equipo: " + this.nombreEquipo);
+		System.out.println("Cargo: " + this.cargo);
 
-    public void setDatos() {
+	}
 
-        super.setDatos();
-        String str;
-        boolean error = false;
-       // boolean existe;
-        //do {
-            System.out.println("Introduce el nombre del equipo: ");
-            this.nombreEquipo = Util.introducirCadena();
-          //  existe = comprobar(fich, this.nombreEquipo);
-			//if(!existe){
-		//		System.out.println("El equipo No existe : ");
-		//	}
-       // } while (!existe);
+	public void setDatos() {
 
+		super.setDatos();
+		String str;
+		boolean error = false;
+		System.out.println("Introduce el nombre del equipo: ");
+		this.nombreEquipo = Util.introducirCadena();
 
-        do {
-            System.out.println(
-                    "Introduzca el cargo del entrenador: (Primer entrenador / Segundo entrenador/ Preparador fisico)");
-            str = Util.introducirCadena();
-            try {
-                this.cargo = CargoEntrenador.valueOf(str.toUpperCase());
-                error = false;
-            } catch (IllegalArgumentException e) {
-                System.out.println(e);
-                error = true;
-            }
-        } while (error);
-    }
+		do {
+			System.out.println(
+					"Introduzca el cargo del entrenador: (Primer entrenador / Segundo entrenador/ Preparador fisico)");
+			str = Util.introducirCadena();
+			try {
+				this.cargo = CargoEntrenador.valueOf(str.toUpperCase());
+				error = false;
+			} catch (IllegalArgumentException e) {
+				System.out.println(e);
+				error = true;
+			}
+		} while (error);
+	}
 
-    //
-    public boolean comprobar(File fich, String nombreEquipo) {
-        ArrayList<Usuarios> equiposLista = new ArrayList<>();
-        Util.fileToArray(fich, equiposLista);
-        for (Usuarios miEqui : equiposLista) {
-			if(miEqui instanceof Entrenador){
+	//
+	public boolean comprobar(File fich, String nombreEquipo) {
+		ArrayList<Usuarios> equiposLista = new ArrayList<>();
+		Util.fileToArray(fich, equiposLista);
+		for (Usuarios miEqui : equiposLista) {
+			if (miEqui instanceof Entrenador) {
 				if (((Entrenador) miEqui).getNombreEquipo().equalsIgnoreCase(nombreEquipo)) {
 					return true;
 				}
 			}
 
-        }
-        return false;
-    }
+		}
+		return false;
+	}
 }
