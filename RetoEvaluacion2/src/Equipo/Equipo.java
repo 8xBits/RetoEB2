@@ -68,7 +68,6 @@ public class Equipo implements Serializable {
 	}
 
 	public void setDatosEquipo() {
-
 		System.out.println("Introduzca nombre del equipo :");
 		this.nombreEquipo = Util.introducirCadena();
 		System.out.println("Introduzca el estadio :");

@@ -2,6 +2,7 @@ package Usuarios;
 
 import Utilidades.Util;
 
+import java.io.File;
 import java.io.Serializable;
 
 public class Usuarios implements Serializable {

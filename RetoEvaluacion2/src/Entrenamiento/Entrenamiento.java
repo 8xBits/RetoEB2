@@ -13,22 +13,33 @@ public class Entrenamiento implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private int codigoEntrenamiento;
 	private LocalDateTime fetchaHoraInicio;
 	private LocalDateTime fetchaHoraFin;
 	private String material;
 	// private ArrayList<String> materiales;
 
 	public Entrenamiento() {
+		codigoEntrenamiento=0;
 		this.fetchaHoraInicio = null;
 		this.fetchaHoraFin = null;
 		this.material = "";
 		// this.materiales = new ArrayList<>();
 	}
 
-	public Entrenamiento(LocalDateTime fetchaHoraInicio, LocalDateTime fetchaHoraFin, String material) {
+	public Entrenamiento(int codigoEntrenamiento ,LocalDateTime fetchaHoraInicio, LocalDateTime fetchaHoraFin, String material) {
+		this.codigoEntrenamiento=codigoEntrenamiento;
 		this.fetchaHoraInicio = fetchaHoraInicio;
 		this.fetchaHoraFin = fetchaHoraFin;
 		this.material = material;
+	}
+
+	public int getCodigoEntrenamiento() {
+		return codigoEntrenamiento;
+	}
+
+	public void setCodigoEntrenamiento(int codigoEntrenamiento) {
+		this.codigoEntrenamiento = codigoEntrenamiento;
 	}
 
 	public String getMaterial() {
@@ -56,6 +67,8 @@ public class Entrenamiento implements Serializable {
 	}
 
 	public void setDatosEntrenamiento() {
+		System.out.println("Introduzca el código del Entrenamiento :");
+		this.codigoEntrenamiento = Util.leerInt();
 		System.out.println("Introduzca nombre del material :");
 		this.material = Util.introducirCadena();
 		do {
@@ -74,6 +87,7 @@ public class Entrenamiento implements Serializable {
 
 	public void getDatosEntrenamiento() {
 		System.out.println("-----Datos de Entrenamiento-----");
+		System.out.println("Código del entrenamiento : " + this.codigoEntrenamiento);
 		System.out.println("Fecha y hora de inicio : " + this.fetchaHoraInicio);
 		System.out.println("Duraccion : " + getDuracion() + "h");
 		System.out.println("Material : " + this.material);
