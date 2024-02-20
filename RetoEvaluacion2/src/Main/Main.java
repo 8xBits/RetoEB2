@@ -9,16 +9,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.Formatter;
+import java.util.*;
 
 import Equipo.Equipo;
 import Entrenamiento.Entrenamiento;
 import Usuarios.*;
 import Utilidades.Util;
 import Utilidades.MyObjectOutputStream;
+import resources.Data;
 
 public class Main {
 
@@ -27,6 +25,19 @@ public class Main {
         File fichEquipo = new File("equipo.dat");
         File fichUsuarios = new File("usuarios.dat");
 
+        // it should run only first time to create and fill files with data
+        if (!fichEquipo.exists() || Util.calculoFichero(fichEquipo) == 0) {
+            ArrayList<Equipo> equipoList = new ArrayList<>();
+            Data.fillDataEquipos(equipoList);
+            Util.arrayToFile(equipoList, fichEquipo);
+
+            if (!fichUsuarios.exists() || Util.calculoFichero(fichUsuarios) == 0) {
+                ArrayList<Usuarios> userList = new ArrayList<>();
+                Data.fillDataEntrenadores(userList);
+                Data.fillDataJugadores(userList);
+                Util.arrayToFile(userList, fichUsuarios);
+            }
+        }
         crearAdmin(fichUsuarios);
         launchNewSession(fichUsuarios, fichEquipo);
 
@@ -217,7 +228,9 @@ public class Main {
                     programarEntrenamiento(fichEquipo, (Entrenador) entrenadorConectado);
                     break;
                 case 2:
-                    anadirJugadores(fichUsuarios);
+                    //anadirJugadores(fichUsuarios);
+                    anadirJugadores2(fichUsuarios, (Entrenador) entrenadorConectado);
+
                     break;
                 case 3:
                     comprobarInfoJugador(fichUsuarios);
@@ -245,7 +258,7 @@ public class Main {
                 case 0:
                     break;
                 case 1:
-					anadirEntrenamiento(fichEquipo, entrenador);
+                    anadirEntrenamiento(fichEquipo, entrenador);
                     break;
                 case 2:
                     modificarEntrenamiento(fichEquipo, entrenador);
@@ -347,32 +360,41 @@ public class Main {
         }
     }
 
+    private static void anadirJugadores2(File fichUsuarios, Entrenador entrenador) {
+        int opc;
+        ArrayList<Usuarios> userList = new ArrayList<Usuarios>();
+        Util.fileToArray(fichUsuarios, userList);
+        Data.fillDataJugadores(userList);
+        Util.arrayToFile(userList, fichUsuarios);
+
+    }
+
     private static void comprobarInfoJugador(File fichUsuarios) {
-    	int pos = 0;
-		String username;
-		ObjectInputStream ois = null;
-		try {
-			System.out.println("Introduce el username del jugador que deseas ver: ");
-			username = Util.introducirCadena();
+        int pos = 0;
+        String username;
+        ObjectInputStream ois = null;
+        try {
+            System.out.println("Introduce el username del jugador que deseas ver: ");
+            username = Util.introducirCadena();
 
-			ois = new ObjectInputStream(new FileInputStream(fichUsuarios));
-			pos = Util.calculoFichero(fichUsuarios);
+            ois = new ObjectInputStream(new FileInputStream(fichUsuarios));
+            pos = Util.calculoFichero(fichUsuarios);
 
-			for (int i = 0; i < pos; i++) {
-				Usuarios user = (Usuarios) ois.readObject();
-				if (user instanceof Jugador && !user.getUser().equalsIgnoreCase(username)) {
-					user.getDatos();
-				}
-			}
-			ois.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+            for (int i = 0; i < pos; i++) {
+                Usuarios user = (Usuarios) ois.readObject();
+                if (user instanceof Jugador && !user.getUser().equalsIgnoreCase(username)) {
+                    user.getDatos();
+                }
+            }
+            ois.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
 
     private static void eliminarJugadores(File fichUsuarios) {
@@ -406,7 +428,8 @@ public class Main {
 
     // done just to give a good format
     private static void listaEntrenamiento(File fichEquipo, Entrenador entrenador) {
-        // entrenador.getDatos();
+        //just to debug
+        entrenador.getDatos();
         LocalDateTime myDate = LocalDateTime.now();
         ArrayList<Equipo> equipoList = new ArrayList<>();
         Util.fileToArray(fichEquipo, equipoList);
@@ -430,9 +453,10 @@ public class Main {
         System.out.println("MENU Jugador");
         System.out.println("1.- Combrobar dorsal (ver disponibles)");
         System.out.println("2.- Ver info equipo ");
-        System.out.println("3.- Menu Principal");
-        System.out.println("4.- Cambiar contraseña ");
-        System.out.println("5.- Goleador del equipo ");
+        System.out.println("3.- Cambiar contraseña ");
+        System.out.println("4.- Goleador del equipo ");
+        System.out.println("5.- BestTeam del equipo ");
+        System.out.println("0.- Salir ");
     }
 
     private static void seleccionJugador(File fichUsuarios, File fichEquipo, Jugador jugadorConectado) {
@@ -447,7 +471,7 @@ public class Main {
                     comprobarDorsal(fichUsuarios, jugadorConectado);
                     break;
                 case 2:
-                    verInfoEquipo(fichEquipo, jugadorConectado);
+                    verInfoEquipo(fichUsuarios, fichEquipo, jugadorConectado);
                     break;
                 case 3:
                     changeMyPassword(fichUsuarios, jugadorConectado);
@@ -456,12 +480,15 @@ public class Main {
                     topScorerPlayerOfTeam(fichUsuarios, jugadorConectado);
                     break;
                 case 5:
+                    topScorerTeamOrderd(fichUsuarios, fichEquipo);
+                    break;
+                case 0:
                     System.out.println("Hasta pronto " + jugadorConectado.getNombre());
-                    // menuPrincipal();
+                    // Menu principal;
                     launchNewSession(fichUsuarios, fichEquipo);
                     break;
             }
-        } while (opc != 6);
+        } while (opc != 0);
     }
 
     public static void comprobarDorsal(File fich, Jugador jugadorConectado) {
@@ -490,7 +517,7 @@ public class Main {
         do {
             System.out.println("\n Elege un dorsal libre que te gusta :");
             choice = Util.leerInt();
-        } while (dorsalNoLibre.contains(choice));
+        } while (!dorsalNoLibre.contains(choice));
         // int pos =usuList.indexOf(jugadorConectado);
         // System.out.println("My size " +usuList.size());
         // System.out.println("My pos index " +pos);
@@ -502,15 +529,38 @@ public class Main {
         // System.out.println("Going Home ");
     }
 
-    public static void verInfoEquipo(File fich, Jugador jugadorConectado) {
+    public static void verInfoEquipo(File fichUser, File fich, Jugador jugadorConectado) {
         ArrayList<Equipo> equipoList = new ArrayList<>();
+        ArrayList<Usuarios> userList = new ArrayList<>();
+        ArrayList<Jugador> jugadorList = new ArrayList<>();
         Util.fileToArray(fich, equipoList);
+        Util.fileToArray(fichUser, userList);
+
         for (Equipo equip : equipoList) {
             if (equip.getNombreEquipo().equalsIgnoreCase(jugadorConectado.getNombreEquipo())) {
                 equip.getDatosEquipo();
+                //  System.out.println("Lista de jugadores de equipo :");
             }
         }
-		// los jugadores ordenados por dorsal
+        // los jugadores ordenados por dorsal
+        for (Usuarios jugador : userList) {
+            if (jugador instanceof Jugador) {
+                if (((Jugador) jugador).getNombreEquipo().equalsIgnoreCase(jugadorConectado.getNombreEquipo())) {
+                    jugadorList.add((Jugador) jugador);
+                }
+            }
+        }
+//        /*Comparator comp = new Comparator() {
+//            @Override
+//            public int compare(Object jugador1, Object jugador2) {
+//                return (((Jugador) jugador1).getDorsal())-(((Jugador) jugador2).getDorsal());
+//            }
+//        };*/
+        Collections.sort(jugadorList);
+        for (Jugador jug : jugadorList) {
+            //jug.getDatos();
+            System.out.println(jug.toString());
+        }
     }
 
     // this function is working with all users now
@@ -540,10 +590,50 @@ public class Main {
         Util.arrayToFile(userList, fich);
     }
 
-	public static void topScorerTeamOrderd(File fichUser,File fichEquipo ){
-	//HASHMAP POR SUMA
-	//	TRRE MAPP POR ODENARADA
-	}
+    public static void topScorerTeamOrderd(File fichUser, File fichEquipo) {
+        //HASHMAP POR SUMA
+        //	TRRE MAPP POR ODENARADA
+        int suma = 0;
+
+        ArrayList<Usuarios> userList = new ArrayList<>();
+        ArrayList<Equipo> equipoList = new ArrayList<>();
+
+        HashMap<String, Integer> sumaGolesEquipo = new HashMap<>();
+        TreeMap<Integer, ArrayList<String>> goalsByEquipos = new TreeMap<>(Collections.reverseOrder());
+
+        Util.fileToArray(fichUser, userList);
+        Util.fileToArray(fichEquipo, equipoList);
+        //sumar goales by equipo
+        for (Equipo equipo : equipoList) {
+            for (Usuarios users : userList) {
+                if (users instanceof Jugador) {
+                    if (equipo.getNombreEquipo().equalsIgnoreCase(((Jugador) users).getNombreEquipo())) {
+                        sumaGolesEquipo.putIfAbsent(((Jugador) users).getNombreEquipo(), 0);
+                        suma = sumaGolesEquipo.get(((Jugador) users).getNombreEquipo()) + ((Jugador) users).getGoles();
+                        sumaGolesEquipo.put(((Jugador) users).getNombreEquipo(), suma);
+                    }
+                }
+            }
+        }
+        //copiar hashmap to treemap sin perder datos
+        for (Map.Entry<String, Integer> entry : sumaGolesEquipo.entrySet()) {
+            String equipoName = entry.getKey();
+            int goals = entry.getValue();
+            if (goalsByEquipos.containsKey(goals)) {
+                goalsByEquipos.get(goals).add(equipoName);
+            } else {
+                ArrayList<String> equipos = new ArrayList<>();
+                equipos.add(equipoName);
+                goalsByEquipos.put(goals, equipos);
+            }
+        }
+        // Mostrar TreeMap ordenad
+        for (Map.Entry<Integer, ArrayList<String>> entry : goalsByEquipos.entrySet()) {
+            for (String playerName : entry.getValue()) {
+                System.out.println(playerName + ": " + entry.getKey() + " goals");
+            }
+        }
+    }
 
     public static void topScorerPlayerOfTeam(File fich, Jugador jugadorConectado) {
         int max = 0, pos = -1;

@@ -9,8 +9,8 @@ public class Admin extends Usuarios  implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int codAdmin;
 
-	public Admin(String nombre, String user, String contraseña, int codAdmin) {
-		super(nombre, user, contraseña);
+	public Admin(String nombre, String user, String contrasena, int codAdmin) {
+		super(nombre, user, contrasena);
 		this.codAdmin = codAdmin;
 		
 	}
@@ -28,4 +28,12 @@ public class Admin extends Usuarios  implements Serializable {
 		this.codAdmin = codAdmin;
 	}
 
+	@Override
+	public String toString() {
+		return "Admin{" +
+				"codAdmin=" + codAdmin +
+				", nombre='" + nombre + '\'' +
+
+				'}';
+	}
 }

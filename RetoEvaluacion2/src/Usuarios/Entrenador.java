@@ -77,14 +77,24 @@ public class Entrenador extends Usuarios implements Serializable {
 	public boolean comprobar(File fich, String nombreEquipo) {
 		ArrayList<Usuarios> equiposLista = new ArrayList<>();
 		Util.fileToArray(fich, equiposLista);
+
 		for (Usuarios miEqui : equiposLista) {
 			if (miEqui instanceof Entrenador) {
 				if (((Entrenador) miEqui).getNombreEquipo().equalsIgnoreCase(nombreEquipo)) {
 					return true;
 				}
 			}
-
 		}
 		return false;
+	}
+
+	@Override
+	public String toString() {
+		return "Entrenador{" +
+				"nombreEquipo='" + nombreEquipo + '\'' +
+				", cargo=" + cargo +
+				", nombre='" + nombre + '\'' +
+
+				'}';
 	}
 }

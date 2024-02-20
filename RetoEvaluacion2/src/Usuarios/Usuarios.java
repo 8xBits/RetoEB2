@@ -62,4 +62,11 @@ public class Usuarios implements Serializable {
 		this.contrasena = Util.introducirCadena();
 		
 	}
+
+	@Override
+	public String toString() {
+		return "Usuarios{" +
+				"nombre='" + nombre + '\'' +
+				'}';
+	}
 }

@@ -4,8 +4,9 @@ import Utilidades.Util;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.Comparator;
 
-public class Jugador extends Usuarios implements Serializable {
+public class Jugador extends Usuarios implements Serializable, Comparable<Jugador> {
 	/**
 	 * 
 	 */
@@ -84,4 +85,21 @@ public class Jugador extends Usuarios implements Serializable {
 		this.asistencias = Util.leerInt();
 	}
 
+
+	@Override
+	public String toString() {
+		return "Jugador{" +
+				"nombreEquipo='" + nombreEquipo + '\'' +
+				", dorsal=" + dorsal +
+				", goles=" + goles +
+				", asistencias=" + asistencias +
+				", nombre='" + nombre + '\'' +
+
+				'}';
+	}
+
+	@Override
+	public int compareTo(Jugador o) {
+		return this.getDorsal() - o.getDorsal();
+	}
 }
