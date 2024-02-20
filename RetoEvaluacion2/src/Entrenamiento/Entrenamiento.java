@@ -9,23 +9,26 @@ import java.time.LocalDateTime;
 public class Entrenamiento implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	private int codigoEntrenamiento;
+	public static int count ;
+	private  int codigoEntrenamiento;
 	private LocalDateTime fetchaHoraInicio;
 	private LocalDateTime fetchaHoraFin;
 	private String material;
 	// private ArrayList<String> materiales;
 
 	public Entrenamiento() {
-		codigoEntrenamiento=0;
+		count++;
+		codigoEntrenamiento=count;
 		this.fetchaHoraInicio = null;
 		this.fetchaHoraFin = null;
 		this.material = "";
+
 		// this.materiales = new ArrayList<>();
 	}
 
 	public Entrenamiento(int codigoEntrenamiento ,LocalDateTime fetchaHoraInicio, LocalDateTime fetchaHoraFin, String material) {
-		this.codigoEntrenamiento=codigoEntrenamiento;
+		count++;
+		this.codigoEntrenamiento=count;;
 		this.fetchaHoraInicio = fetchaHoraInicio;
 		this.fetchaHoraFin = fetchaHoraFin;
 		this.material = material;
@@ -35,9 +38,6 @@ public class Entrenamiento implements Serializable {
 		return codigoEntrenamiento;
 	}
 
-	public void setCodigoEntrenamiento(int codigoEntrenamiento) {
-		this.codigoEntrenamiento = codigoEntrenamiento;
-	}
 
 	public String getMaterial() {
 		return material;
@@ -64,8 +64,6 @@ public class Entrenamiento implements Serializable {
 	}
 
 	public void setDatosEntrenamiento() {
-		System.out.println("Introduzca el código del Entrenamiento :");
-		this.codigoEntrenamiento = Util.leerInt();
 		System.out.println("Introduzca nombre del material :");
 		this.material = Util.introducirCadena();
 		do {

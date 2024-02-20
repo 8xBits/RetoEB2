@@ -202,7 +202,6 @@ public class Main {
         System.out.println("4.- Eliminar jugadores");
         System.out.println("5.- Lista de entrenamientos");
         System.out.println("0.- Salir");
-
     }
 
     public static void seleccionEntrenador(File fichEquipo, File fichUsuarios, Usuarios entrenadorConectado) {
@@ -482,7 +481,6 @@ public class Main {
             }
         }
         System.out.println("Tu dorsales es :  " + jugadorConectado.getDorsal());
-
         System.out.println("Dorsales Libres :  ");
         for (int i = 1; i < maxJugador; i++) {
             if (!dorsalNoLibre.contains(i)) {
@@ -512,6 +510,7 @@ public class Main {
                 equip.getDatosEquipo();
             }
         }
+		// los jugadores ordenados por dorsal
     }
 
     // this function is working with all users now
@@ -541,6 +540,11 @@ public class Main {
         Util.arrayToFile(userList, fich);
     }
 
+	public static void topScorerTeamOrderd(File fichUser,File fichEquipo ){
+	//HASHMAP POR SUMA
+	//	TRRE MAPP POR ODENARADA
+	}
+
     public static void topScorerPlayerOfTeam(File fich, Jugador jugadorConectado) {
         int max = 0, pos = -1;
         boolean found = false;
@@ -559,9 +563,9 @@ public class Main {
             }
         }
         if (!found) {
-            System.out.println("No one is top Scorer for :" + jugadorConectado.getNombreEquipo());
+            System.out.println("No hay ninguna jugador con mas goales en :" + jugadorConectado.getNombreEquipo());
         } else {
-            System.out.println("The top Scorer for : " + jugadorConectado.getNombreEquipo() + " is :");
+            System.out.println("El jogador con mas goales  es : " + jugadorConectado.getNombreEquipo() + " is :");
             ((Jugador) userList.get(pos)).getDatos();
         }
     }
