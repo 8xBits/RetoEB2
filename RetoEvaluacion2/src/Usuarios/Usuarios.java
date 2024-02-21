@@ -6,9 +6,7 @@ import java.io.File;
 import java.io.Serializable;
 
 public class Usuarios implements Serializable {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	protected String nombre;
 	protected String user;
@@ -63,5 +61,12 @@ public class Usuarios implements Serializable {
 		System.out.println("Introduce la contraseña: ");
 		this.contrasena = Util.introducirCadena();
 		
+	}
+
+	@Override
+	public String toString() {
+		return "Usuarios{" +
+				"nombre='" + nombre + '\'' +
+				'}';
 	}
 }

@@ -86,6 +86,11 @@ public class Equipo implements Serializable {
 
 	@Override
 	public String toString() {
-		return super.toString();
+		return "Equipo{" +
+				"nombreEquipo='" + nombreEquipo + '\'' +
+				", estadio='" + estadio + '\'' +
+				", titulos=" + titulos +
+				", listaEntrenamiento=" + listaEntrenamiento +
+				'}';
 	}
 }
