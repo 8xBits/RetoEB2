@@ -308,28 +308,29 @@ public class Main {
 
     public static void borrarEntrenamiento(File fichEquipo, Entrenador entrenador) {
         int pos = -1;
+        int posequipo=-1;
         ArrayList<Equipo> equipos = new ArrayList<>();
         Util.fileToArray(fichEquipo, equipos);
         System.out.println("Elige el código del entrenamiento :");
         int codigo = Util.leerInt();
         for (Equipo equipo : equipos) {
             if (equipo.getNombreEquipo().equalsIgnoreCase(entrenador.getNombreEquipo())) {
+                posequipo=equipos.indexOf(equipo);
                 for (Entrenamiento entra : equipo.getListaEntrenamiento()) {
                     if (entra.getCodigoEntrenamiento() == codigo) {
-                        //entra.setDatosEntrenamiento();
                         pos = equipo.getListaEntrenamiento().indexOf(entra);
                     }
                 }
             }
-            if (pos != -1) {
-                equipo.getListaEntrenamiento().remove(pos);
-            }
-            if (pos == -1) {
-                System.out.println("Este entrenamiento no existe");
-            }
 
         }
-
+        if (pos != -1) {
+            equipos.get(posequipo).getListaEntrenamiento().remove(pos);
+            System.out.println("Entrenamiento borrado");
+        }
+        if (pos == -1) {
+            System.out.println("Este entrenamiento no existe");
+        }
         Util.arrayToFile(equipos, fichEquipo);
     }
 
@@ -598,7 +599,7 @@ public class Main {
         ArrayList<Usuarios> userList = new ArrayList<>();
         ArrayList<Equipo> equipoList = new ArrayList<>();
 
-        HashMap<String, Integer> sumaGolesEquipo = new HashMap<>();
+        HashMap<String, Integer> equipoSumaGoles = new HashMap<>();
         TreeMap<Integer, ArrayList<String>> goalsByEquipos = new TreeMap<>(Collections.reverseOrder());
 
         Util.fileToArray(fichUser, userList);
@@ -608,23 +609,24 @@ public class Main {
             for (Usuarios users : userList) {
                 if (users instanceof Jugador) {
                     if (equipo.getNombreEquipo().equalsIgnoreCase(((Jugador) users).getNombreEquipo())) {
-                        sumaGolesEquipo.putIfAbsent(((Jugador) users).getNombreEquipo(), 0);
-                        suma = sumaGolesEquipo.get(((Jugador) users).getNombreEquipo()) + ((Jugador) users).getGoles();
-                        sumaGolesEquipo.put(((Jugador) users).getNombreEquipo(), suma);
+                        equipoSumaGoles.putIfAbsent(((Jugador) users).getNombreEquipo(), 0);
+                        suma = equipoSumaGoles.get(((Jugador) users).getNombreEquipo()) + ((Jugador) users).getGoles();
+                        equipoSumaGoles.put(((Jugador) users).getNombreEquipo(), suma);
                     }
                 }
             }
         }
         //copiar hashmap to treemap sin perder datos
-        for (Map.Entry<String, Integer> entry : sumaGolesEquipo.entrySet()) {
+        for (Map.Entry<String, Integer> entry : equipoSumaGoles.entrySet()) {
             String equipoName = entry.getKey();
-            int goals = entry.getValue();
-            if (goalsByEquipos.containsKey(goals)) {
-                goalsByEquipos.get(goals).add(equipoName);
+            int sumaGoals = entry.getValue();
+
+            if (goalsByEquipos.containsKey(sumaGoals)) {
+                goalsByEquipos.get(sumaGoals).add(equipoName);
             } else {
                 ArrayList<String> equipos = new ArrayList<>();
                 equipos.add(equipoName);
-                goalsByEquipos.put(goals, equipos);
+                goalsByEquipos.put(sumaGoals, equipos);
             }
         }
         // Mostrar TreeMap ordenad
