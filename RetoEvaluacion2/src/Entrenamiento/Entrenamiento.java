@@ -67,11 +67,11 @@ public class Entrenamiento implements Serializable {
 		System.out.println("Introduzca nombre del material :");
 		this.material = Util.introducirCadena();
 		do {
-			System.out.println("Introduzca el dia con la Hora de inicio :");
+			System.out.println("Introduzca el dia con la Hora de inicio (aaaa/mm/dd HH:mm) :");
 			this.fetchaHoraInicio = Util.leerFechaAMDH();
-			System.out.println("Introduzca el dia con la Hora de inicio :");
+			System.out.println("Introduzca el dia con la Hora de fin (aaaa/mm/dd HH:mm):");
 			this.fetchaHoraFin = Util.leerFechaAMDH();
-		} while (fetchaHoraFin.isBefore(fetchaHoraInicio));
+		} while (fetchaHoraFin.isBefore(fetchaHoraInicio) && fetchaHoraInicio.isBefore(LocalDateTime.now()));
 
 	}
 

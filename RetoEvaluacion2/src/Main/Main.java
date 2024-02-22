@@ -32,14 +32,14 @@ public class Main {
 			ArrayList<Equipo> equipoList = new ArrayList<>();
 			Data.fillDataEquipos(equipoList);
 			Util.arrayToFile(equipoList, fichEquipo);
-
-			if (!fichUsuarios.exists() || Util.calculoFichero(fichUsuarios) == 0) {
-				ArrayList<Usuarios> userList = new ArrayList<>();
-				Data.fillDataEntrenadores(userList);
-				Data.fillDataJugadores(userList);
-				Util.arrayToFile(userList, fichUsuarios);
-			}
 		}
+		if (!fichUsuarios.exists() || Util.calculoFichero(fichUsuarios) == 0) {
+			ArrayList<Usuarios> userList = new ArrayList<>();
+			Data.fillDataEntrenadores(userList);
+			Data.fillDataJugadores(userList);
+			Util.arrayToFile(userList, fichUsuarios);
+		}
+
 		crearAdmin(fichUsuarios);
 		launchNewSession(fichUsuarios, fichEquipo);
 
@@ -225,8 +225,7 @@ public class Main {
 				programarEntrenamiento(fichEquipo, (Entrenador) entrenadorConectado);
 				break;
 			case 2:
-				// anadirJugadores(fichUsuarios);
-				anadirJugadores2(fichUsuarios, (Entrenador) entrenadorConectado);
+				 anadirJugadores(fichUsuarios);
 
 				break;
 			case 3:
@@ -252,7 +251,7 @@ public class Main {
 			listaEntrenamiento(fichEquipo, entrenador);
 			opc = Util.leerInt(
 					"0-Salir \n 1-añadir un entrenamiento \n 2-Modifcar un entrenamiento \n  3-Borrar un entrenamiento",
-					1, 2);
+					0, 2);
 			switch (opc) {
 			case 0:
 				break;
@@ -274,10 +273,11 @@ public class Main {
 		Util.fileToArray(fichEquipo, equipos);
 		for (Equipo equipo : equipos) {
 			if (equipo.getNombreEquipo().equalsIgnoreCase(entrenador.getNombreEquipo())) {
-				for (Entrenamiento entra : equipo.getListaEntrenamiento()) {
+				//for (Entrenamiento entra : equipo.getListaEntrenamiento()) {
+                Entrenamiento entra = new Entrenamiento();
 					entra.setDatosEntrenamiento();
 					equipo.addEntrenamiento(entra);
-				}
+				//}
 			}
 		}
 		Util.arrayToFile(equipos, fichEquipo);
@@ -470,7 +470,7 @@ public class Main {
 		int opc;
 		do {
 			menuJugador();
-			opc = Util.leerInt("Elege una opcion", 1, 5);
+			opc = Util.leerInt("Elege una opcion", 0, 5);
 			switch (opc) {
 			case 1:
 				comprobarDorsal(fichUsuarios, jugadorConectado);
@@ -526,7 +526,7 @@ public class Main {
 		// int pos =usuList.indexOf(jugadorConectado);
 		// System.out.println("My size " +usuList.size());
 		// System.out.println("My pos index " +pos);
-		if (pos != -1) {
+		if (pos != -1 && ((Jugador) usuList.get(pos)).getDorsal()!= choice) {
 			((Jugador) usuList.get(pos)).setDorsal(choice);
 			System.out.println("Tu nuevo dorsal es : " + choice);
 		}
@@ -690,7 +690,7 @@ public class Main {
 						}
 
 						if (aux.getUser().equalsIgnoreCase(user)) {
-							if (aux.getContraseña().equalsIgnoreCase(passwd)) {
+							if (aux.getContraseña().equals(passwd)) {
 								return aux; // Usuario y contraseña coinciden
 							} else {
 								throw new ExcepcionLogIn("El usuario y la contraseña no coinciden");
