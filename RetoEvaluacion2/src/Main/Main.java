@@ -225,11 +225,11 @@ public class Main {
 				programarEntrenamiento(fichEquipo, (Entrenador) entrenadorConectado);
 				break;
 			case 2:
-				 anadirJugadores(fichUsuarios);
+				anadirJugadores(fichUsuarios);
 
 				break;
 			case 3:
-				comprobarInfoJugador(fichUsuarios);
+				comprobarInfoJugador(fichUsuarios, entrenadorConectado, fichEquipo);
 				break;
 			case 4:
 				eliminarJugadores(fichUsuarios);
@@ -251,7 +251,7 @@ public class Main {
 			listaEntrenamiento(fichEquipo, entrenador);
 			opc = Util.leerInt(
 					"0-Salir \n 1-añadir un entrenamiento \n 2-Modifcar un entrenamiento \n  3-Borrar un entrenamiento",
-					0, 2);
+					0, 3);
 			switch (opc) {
 			case 0:
 				break;
@@ -273,11 +273,9 @@ public class Main {
 		Util.fileToArray(fichEquipo, equipos);
 		for (Equipo equipo : equipos) {
 			if (equipo.getNombreEquipo().equalsIgnoreCase(entrenador.getNombreEquipo())) {
-				//for (Entrenamiento entra : equipo.getListaEntrenamiento()) {
-                Entrenamiento entra = new Entrenamiento();
-					entra.setDatosEntrenamiento();
-					equipo.addEntrenamiento(entra);
-				//}
+				Entrenamiento entra = new Entrenamiento();
+				entra.setDatosEntrenamiento();
+				equipo.addEntrenamiento(entra);
 			}
 		}
 		Util.arrayToFile(equipos, fichEquipo);
@@ -342,7 +340,7 @@ public class Main {
 			} else {
 				oos = new ObjectOutputStream(new FileOutputStream(fichUsuarios));
 			}
-
+//comprobar que el dorsal no esta libre
 			do {
 				Usuarios jugador = new Jugador();
 				jugador.setDatos();
@@ -369,22 +367,38 @@ public class Main {
 
 	}
 
-	private static void comprobarInfoJugador(File fichUsuarios) {
-		int pos = 0;
-		String username;
-		ObjectInputStream ois = null;
+	private static void comprobarInfoJugador(File fichUsuarios, Usuarios entrenador, File fichEquipos) {
+		int pos = 0, pos2 = 0;
+		ObjectInputStream ois = null, ois2 = null;
+		Equipo equipo = new Equipo();
+		TreeMap<Integer, Jugador> orden = new TreeMap<>(Comparator.naturalOrder());
+		Usuarios user = new Usuarios();
 		try {
-			System.out.println("Introduce el username del jugador que deseas ver: ");
-			username = Util.introducirCadena();
 
 			ois = new ObjectInputStream(new FileInputStream(fichUsuarios));
 			pos = Util.calculoFichero(fichUsuarios);
+			ois2 = new ObjectInputStream(new FileInputStream(fichEquipos));
+			pos2 = Util.calculoFichero(fichEquipos);
 
+			while (!equipo.getNombreEquipo().equalsIgnoreCase(((Entrenador) entrenador).getNombreEquipo())) {
+				equipo = (Equipo) ois2.readObject();
+			}
+			equipo.getDatosEquipo();
+			System.out.println("------------");
+			System.out.println("Entrenador: ");
+			entrenador.getDatos();
+			System.out.println("------------");
 			for (int i = 0; i < pos; i++) {
-				Usuarios user = (Usuarios) ois.readObject();
-				if (user instanceof Jugador && !user.getUser().equalsIgnoreCase(username)) {
-					user.getDatos();
+				user = (Usuarios) ois.readObject();
+				if (user instanceof Jugador && ((Jugador) user).getNombreEquipo()
+						.equalsIgnoreCase(((Entrenador) entrenador).getNombreEquipo())) {
+					orden.put(((Jugador) user).getDorsal(), (Jugador) user);
 				}
+			}
+
+			for (Usuarios usuarios : orden.values()) {
+				usuarios.getDatos();
+				System.out.println("------------");
 			}
 			ois.close();
 		} catch (IOException e) {
@@ -519,6 +533,7 @@ public class Main {
 				System.out.print("[" + i + "]   ");
 			}
 		}
+		// comprobar que el dorsal introducido esta libre
 		do {
 			System.out.println("\n Elege un dorsal libre que te gusta :");
 			choice = Util.leerInt();
@@ -526,7 +541,7 @@ public class Main {
 		// int pos =usuList.indexOf(jugadorConectado);
 		// System.out.println("My size " +usuList.size());
 		// System.out.println("My pos index " +pos);
-		if (pos != -1 && ((Jugador) usuList.get(pos)).getDorsal()!= choice) {
+		if (pos != -1 && ((Jugador) usuList.get(pos)).getDorsal() != choice) {
 			((Jugador) usuList.get(pos)).setDorsal(choice);
 			System.out.println("Tu nuevo dorsal es : " + choice);
 		}
@@ -547,6 +562,17 @@ public class Main {
 				// System.out.println("Lista de jugadores de equipo :");
 			}
 		}
+		System.out.println("-------");
+		System.out.println("Entrenadores: ");
+		for (int i = 0; i < userList.size(); i++) {
+			if (userList.get(i) instanceof Entrenador) {
+				if (((Entrenador) userList.get(i)).getNombreEquipo()
+						.equalsIgnoreCase(jugadorConectado.getNombreEquipo())) {
+					userList.get(i).getDatos();
+					System.out.println("-------");
+				}
+			}
+		}
 		// los jugadores ordenados por dorsal
 		for (Usuarios jugador : userList) {
 			if (jugador instanceof Jugador) {
@@ -555,16 +581,10 @@ public class Main {
 				}
 			}
 		}
-//        /*Comparator comp = new Comparator() {
-//            @Override
-//            public int compare(Object jugador1, Object jugador2) {
-//                return (((Jugador) jugador1).getDorsal())-(((Jugador) jugador2).getDorsal());
-//            }
-//        };*/
 		Collections.sort(jugadorList);
 		for (Jugador jug : jugadorList) {
-			// jug.getDatos();
 			System.out.println(jug.toString());
+			System.out.println("-------");
 		}
 	}
 
