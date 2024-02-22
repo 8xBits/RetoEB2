@@ -1,23 +1,16 @@
 package Main;
 
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import Equipo.Equipo;
 import Entrenamiento.Entrenamiento;
+import Equipo.Equipo;
 import Usuarios.*;
-import Utilidades.Util;
 import Utilidades.ExcepcionLogIn;
 import Utilidades.ExcepcionUser;
 import Utilidades.MyObjectOutputStream;
+import Utilidades.Util;
 import resources.Data;
 
 public class Main {
@@ -27,7 +20,14 @@ public class Main {
 		File fichEquipo = new File("equipo.dat");
 		File fichUsuarios = new File("usuarios.dat");
 
-		// it should run only first time to create and fill files with data
+		initializeFiles(fichEquipo, fichUsuarios);
+
+		createAdmin(fichUsuarios);
+		launchNewSession(fichUsuarios, fichEquipo);
+
+	}
+
+	private static void initializeFiles(File fichEquipo, File fichUsuarios) {
 		if (!fichEquipo.exists() || Util.calculoFichero(fichEquipo) == 0) {
 			ArrayList<Equipo> equipoList = new ArrayList<>();
 			Data.fillDataEquipos(equipoList);
@@ -39,21 +39,35 @@ public class Main {
 			Data.fillDataJugadores(userList);
 			Util.arrayToFile(userList, fichUsuarios);
 		}
+	}
 
-		crearAdmin(fichUsuarios);
-		launchNewSession(fichUsuarios, fichEquipo);
+	private static void createAdmin(File fich) {
+		ArrayList<Usuarios> usuarios = new ArrayList<>();
+		Util.fileToArray(fich, usuarios);
+		Usuarios admin = new Admin("Admin", "admin", "admin", 1);
+		usuarios.add(admin);
+		Util.arrayToFile(usuarios, fich);
+	}
 
-	}// main
+	private static int logIn(Usuarios usuario) {
+		if (usuario instanceof Admin) {
+			return 0;
+		} else if (usuario instanceof Entrenador) {
+			return 1;
+		} else if (usuario instanceof Jugador) {
+			return 2;
+		}
+		return -1;
+	}
 
-	public static void launchNewSession(File fichUsuarios, File fichEquipo) {
-		// usertype 0 es admin, el 1 es entrenador y el 2 jugador
-		int userType = -99;
+	private static void launchNewSession(File fichUsuarios, File fichEquipo) {
+		int userType;
 		do {
 			int opcion = Util.leerInt("Desea iniciar sesion 3=si/4=no", 3, 4);
 			if (opcion == 3) {
 				Usuarios connectedUser = consulta(fichUsuarios, fichEquipo);
 				userType = logIn(connectedUser);
-				// int menu = 0;
+
 				switch (userType) {
 				case 0:
 					seleccionAdmin(fichEquipo, fichUsuarios, (Admin) connectedUser);
@@ -65,86 +79,57 @@ public class Main {
 					seleccionJugador(fichUsuarios, fichEquipo, (Jugador) connectedUser);
 					break;
 				}
+			} else {
+				userType = 4;
 			}
 		} while (userType > 3);
 	}
 
-	private static void crearAdmin(File fich) {
-		// solo ejemplo
-		ArrayList<Usuarios> usuarios = new ArrayList<Usuarios>();
-		Util.fileToArray(fich, usuarios);
-		Usuarios admin = new Admin("Admin", "admin", "admin", 1);
-		usuarios.add(admin);
-		Util.arrayToFile(usuarios, fich);
-
-//        ObjectOutputStream oos = null;
-//        if (!fich.exists()) {
-//            try {
-//                oos = new ObjectOutputStream(new FileOutputStream(fich));
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            Usuarios admin = new Admin("Admin", "admin", "admin", 1);
-//            try {
-//                oos.writeObject(admin);
-//            } catch (IOException e) {
-//                System.out.println("Error al crear el administrador");
-//            }
-//        }
-	}
-
-	private static int logIn(Usuarios usuario) {
-		int userType = -1;
-		if (usuario instanceof Admin) {
-			userType = 0;
-		} else if (usuario instanceof Entrenador) {
-			userType = 1;
-		} else if (usuario instanceof Jugador) {
-			userType = 2;
-		}
-		return userType;
+	private static void seleccionAdmin(File fichEquipo, File fichUsuarios, Admin adminConnectado) {
+		System.out.println("Bienvenidos " + adminConnectado.getNombre());
+		int menu;
+		do {
+			menuAdmin();
+			System.out.println("Que desea hacer");
+			menu = Util.leerInt(1, 3);
+			switch (menu) {
+			case 1:
+				introducirEquipo(fichEquipo);
+				break;
+			case 2:
+				introducirEntrenadores(fichUsuarios);
+				break;
+			case 3:
+				System.out.println("Vuelva pronto " + adminConnectado.getUser());
+				launchNewSession(fichUsuarios, fichEquipo);
+				break;
+			}
+		} while (menu != 3);
 	}
 
 	private static void introducirEquipo(File fich) {
-		int opc;
-		ObjectOutputStream oos = null;
-		try {
-			if (fich.exists()) {
-				oos = new MyObjectOutputStream(new FileOutputStream(fich, true));
-			} else {
-				oos = new ObjectOutputStream(new FileOutputStream(fich));
-			}
+		try (ObjectOutputStream oos = getOutputStream(fich)) {
+			int opc;
 			do {
 				Equipo equipo = new Equipo();
 				equipo.setDatosEquipo();
 				oos.writeObject(equipo);
 				opc = Util.leerInt("¿Desea añadir mas equipos? 1=si/2=no", 1, 2);
 			} while (opc == 1);
-			oos.close();
-
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
 
+	private static ObjectOutputStream getOutputStream(File fich) throws IOException {
+		return fich.exists() ? new MyObjectOutputStream(new FileOutputStream(fich, true))
+				: new ObjectOutputStream(new FileOutputStream(fich));
 	}
 
 	private static void introducirEntrenadores(File fich) {
-		int opc;
-		ObjectOutputStream oos = null;
-		boolean existe;
-		try {
-			if (fich.exists()) {
-				oos = new MyObjectOutputStream(new FileOutputStream(fich, true));
-			} else {
-				oos = new ObjectOutputStream(new FileOutputStream(fich));
-			}
-
+		try (ObjectOutputStream oos = getOutputStream(fich)) {
+			int opc;
+			boolean existe = false;
 			do {
 				Usuarios entrenador = new Entrenador();
 				entrenador.setDatos();
@@ -157,16 +142,9 @@ public class Main {
 
 				opc = Util.leerInt("¿Desea añadir mas entrenadores? 1=si/2=no", 1, 2);
 			} while (opc == 1);
-			oos.close();
-
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
 	// alder
@@ -321,6 +299,7 @@ public class Main {
 			}
 
 		}
+		// no funciona
 		if (pos != -1) {
 			equipos.get(posequipo).getListaEntrenamiento().remove(pos);
 			System.out.println("Entrenamiento borrado");
@@ -397,6 +376,7 @@ public class Main {
 			}
 
 			for (Usuarios usuarios : orden.values()) {
+				System.out.println(((Jugador) usuarios).getUser());
 				usuarios.getDatos();
 				System.out.println("------------");
 			}
@@ -410,40 +390,48 @@ public class Main {
 		}
 	}
 
+	// no elimina jugador
 	private static void eliminarJugadores(File fichUsuarios) {
-		int pos = 0;
-		String nombre;
-		ObjectInputStream ois = null;
-		ObjectOutputStream oos = null;
-		File auxFile = new File("auxFile.txt");
+	    String nombre;
+	    ObjectInputStream ois = null;
+	    ObjectOutputStream oos = null;
+	    File auxFile = new File("auxFile.txt");
 
-		try {
-			System.out.println("Introduce el nombre del jugador: ");
-			nombre = Util.introducirCadena();
+	    try {
+	        System.out.println("Introduce el nombre de usuario del jugador: ");
+	        nombre = Util.introducirCadena();
 
-			ois = new ObjectInputStream(new FileInputStream(fichUsuarios));
-			oos = new ObjectOutputStream(new FileOutputStream(auxFile));
-			pos = Util.calculoFichero(fichUsuarios);
+	        ois = new ObjectInputStream(new FileInputStream(fichUsuarios));
+	        oos = new ObjectOutputStream(new FileOutputStream(auxFile));
 
-			for (int i = 0; i < pos; i++) {
-				Jugador J1 = (Jugador) ois.readObject();
-				if (!J1.getNombre().equalsIgnoreCase(nombre)) {
-					oos.writeObject(J1);
-				}
-			}
-		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (ois != null)
-					ois.close();
-				if (oos != null)
-					oos.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+	        while (true) {
+	            try {
+	                Usuarios jugador = (Usuarios) ois.readObject();
+
+	                // Compare usernames case-insensitively
+	                if (!jugador.getUser().equalsIgnoreCase(nombre.trim())) {
+	                    oos.writeObject(jugador);
+	                }
+	            } catch (EOFException e) {
+	                break; // End of file
+	            }
+	        }
+	    } catch (IOException | ClassNotFoundException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (ois != null) ois.close();
+	            if (oos != null) oos.close();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+
+	        // Replace the original file with the modified one
+	        fichUsuarios.delete();
+	        auxFile.renameTo(fichUsuarios);
+	    }
 	}
+
 
 	// done just to give a good format
 	private static void listaEntrenamiento(File fichEquipo, Entrenador entrenador) {
