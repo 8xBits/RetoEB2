@@ -392,46 +392,47 @@ public class Main {
 
 	// no elimina jugador
 	private static void eliminarJugadores(File fichUsuarios) {
-	    String nombre;
-	    ObjectInputStream ois = null;
-	    ObjectOutputStream oos = null;
-	    File auxFile = new File("auxFile.txt");
+		String nombre;
+		ObjectInputStream ois = null;
+		ObjectOutputStream oos = null;
+		File auxFile = new File("auxFile.txt");
 
-	    try {
-	        System.out.println("Introduce el nombre de usuario del jugador: ");
-	        nombre = Util.introducirCadena();
+		try {
+			System.out.println("Introduce el nombre de usuario del jugador: ");
+			nombre = Util.introducirCadena();
 
-	        ois = new ObjectInputStream(new FileInputStream(fichUsuarios));
-	        oos = new ObjectOutputStream(new FileOutputStream(auxFile));
+			ois = new ObjectInputStream(new FileInputStream(fichUsuarios));
+			oos = new ObjectOutputStream(new FileOutputStream(auxFile));
 
-	        while (true) {
-	            try {
-	                Usuarios jugador = (Usuarios) ois.readObject();
+			while (true) {
+				try {
+					Usuarios jugador = (Usuarios) ois.readObject();
 
-	                // Compare usernames case-insensitively
-	                if (!jugador.getUser().equalsIgnoreCase(nombre.trim())) {
-	                    oos.writeObject(jugador);
-	                }
-	            } catch (EOFException e) {
-	                break; // End of file
-	            }
-	        }
-	    } catch (IOException | ClassNotFoundException e) {
-	        e.printStackTrace();
-	    } finally {
-	        try {
-	            if (ois != null) ois.close();
-	            if (oos != null) oos.close();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
+					// Compare usernames case-insensitively
+					if (!jugador.getUser().equalsIgnoreCase(nombre.trim())) {
+						oos.writeObject(jugador);
+					}
+				} catch (EOFException e) {
+					break; // End of file
+				}
+			}
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (ois != null)
+					ois.close();
+				if (oos != null)
+					oos.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 
-	        // Replace the original file with the modified one
-	        fichUsuarios.delete();
-	        auxFile.renameTo(fichUsuarios);
-	    }
+			// Replace the original file with the modified one
+			fichUsuarios.delete();
+			auxFile.renameTo(fichUsuarios);
+		}
 	}
-
 
 	// done just to give a good format
 	private static void listaEntrenamiento(File fichEquipo, Entrenador entrenador) {
@@ -525,7 +526,7 @@ public class Main {
 		do {
 			System.out.println("\n Elege un dorsal libre que te gusta :");
 			choice = Util.leerInt();
-		} while (!dorsalNoLibre.contains(choice));
+		} while (dorsalNoLibre.contains(choice) || choice == 0 || choice > 26);
 		// int pos =usuList.indexOf(jugadorConectado);
 		// System.out.println("My size " +usuList.size());
 		// System.out.println("My pos index " +pos);
