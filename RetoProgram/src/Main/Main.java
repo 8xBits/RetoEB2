@@ -722,7 +722,7 @@ public class Main {
 				if (duplicatedDorsal instanceof Jugador) {
 					if (((Jugador) jugador).getNombreEquipo().equals(((Jugador) duplicatedDorsal).getNombreEquipo())) {
 						dorsal = ((Jugador) duplicatedDorsal).getDorsal();
-						if (dorsal == ((Jugador) jugador).getDorsal()) {
+						if (dorsal == ((Jugador) jugador).getDorsal() || dorsal == 0 || dorsal > 25) {
 							return true;
 						}
 					}
