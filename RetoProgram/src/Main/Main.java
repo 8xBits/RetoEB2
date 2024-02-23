@@ -1,6 +1,7 @@
 package Main;
 
 import java.io.*;
+
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -377,13 +378,11 @@ public class Main {
 				e.printStackTrace();
 			}
 
-			// Replace the original file with the modified one
 			fichUsuarios.delete();
 			auxFile.renameTo(fichUsuarios);
 		}
 	}
 
-	// done just to give a good format
 	private static void listaEntrenamiento(File fichEquipo, Entrenador entrenador) {
 		// just to debug
 		entrenador.getDatos();
@@ -405,7 +404,6 @@ public class Main {
 		}
 	}
 
-	// omar
 	private static void menuJugador() {
 		System.out.println("MENU Jugador");
 		System.out.println("1.- Combrobar dorsal (ver disponibles)");
