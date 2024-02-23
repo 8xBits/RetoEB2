@@ -410,7 +410,7 @@ public class Main {
 		System.out.println("2.- Ver info equipo ");
 		System.out.println("3.- Cambiar contraseña ");
 		System.out.println("4.- Goleador del equipo ");
-		System.out.println("5.- BestTeam del equipo ");
+		System.out.println("5.- Equipo con mas goles de la Liga");
 		System.out.println("0.- Salir ");
 	}
 
@@ -420,7 +420,7 @@ public class Main {
 		int opc;
 		do {
 			menuJugador();
-			opc = Util.leerInt("Elege una opcion", 0, 5);
+			opc = Util.leerInt("Elige una opción", 0, 5);
 			switch (opc) {
 			case 1:
 				comprobarDorsal(fichUsuarios, jugadorConectado);
@@ -471,7 +471,7 @@ public class Main {
 		}
 		// comprobar que el dorsal introducido esta libre
 		do {
-			System.out.println("\n Elege un dorsal libre que te gusta :");
+			System.out.println("\n Elige un dorsal libre que desees :");
 			choice = Util.leerInt();
 		} while (dorsalNoLibre.contains(choice) || choice == 0 || choice > 26);
 		// int pos =usuList.indexOf(jugadorConectado);
@@ -538,7 +538,7 @@ public class Main {
 				if (userFromList.getContraseña().equals(strOldPass)) {
 					System.out.println("Introduce tu nueva contraseña :");
 					strNewPass = Util.introducirCadena();
-					System.out.println("ReIntroduce tu nueva contraseña :");
+					System.out.println("Confirma tu nueva contraseña :");
 					strNewPass2 = Util.introducirCadena();
 					if (strNewPass.equals(strNewPass2)) {
 						userFromList.setContraseña(strNewPass);
@@ -615,9 +615,9 @@ public class Main {
 			}
 		}
 		if (!found) {
-			System.out.println("No hay ninguna jugador con mas goales en :" + jugadorConectado.getNombreEquipo());
+			System.out.println("No hay ningun jugador con mas goales en :" + jugadorConectado.getNombreEquipo());
 		} else {
-			System.out.println("El jogador con mas goales  es : " + jugadorConectado.getNombreEquipo() + " is :");
+			System.out.println("El jugador con mas goles  en : " + jugadorConectado.getNombreEquipo() + " es :");
 			((Jugador) userList.get(pos)).getDatos();
 		}
 	}
