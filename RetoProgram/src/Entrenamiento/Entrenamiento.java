@@ -74,7 +74,7 @@ public class Entrenamiento implements Serializable {
 			if(fetchaHoraFin.isBefore(fetchaHoraInicio)) {
 				System.out.println("Error Fecha fin is antes fecha de inicio");
 			}else if(fetchaHoraInicio.isBefore(LocalDateTime.now())) {
-				System.out.println("Error Fecha inicio no puede ser antes hoy ");
+				System.out.println("No puede haber un entrenamiento antes de la hora actual");
 			}
 		} while (fetchaHoraFin.isBefore(fetchaHoraInicio) ||  fetchaHoraInicio.isBefore(LocalDateTime.now()));
 	}
