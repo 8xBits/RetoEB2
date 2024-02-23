@@ -114,7 +114,12 @@ public class Main {
 			do {
 				Equipo equipo = new Equipo();
 				equipo.setDatosEquipo();
-				oos.writeObject(equipo);
+				if(!equipoDuplicado(fich,equipo.getNombreEquipo())) {
+					oos.writeObject(equipo);
+					System.out.println(equipo.getNombreEquipo() +"ha sido añadido");
+				}else {
+					System.out.println(equipo.getNombreEquipo() +"Ya existe. no se puede añadirlo");
+				}
 				opc = Util.leerInt("¿Desea añadir mas equipos? 1=si/2=no", 1, 2);
 			} while (opc == 1);
 		} catch (IOException e) {
@@ -144,9 +149,9 @@ public class Main {
 						System.out.println("El equipo No existe.");
 					} else {
 						oos.writeObject(entrenador);
+						System.out.println(entrenador.getNombre() +"ha sido añadido");
 					}
 				}
-
 				opc = Util.leerInt("¿Desea añadir mas entrenadores? 1=si/2=no", 1, 2);
 			} while (opc == 1);
 		} catch (IOException e) {
@@ -168,7 +173,7 @@ public class Main {
 		System.out.println("-------MENU-----------");
 		System.out.println("1.- Programar entrenamiento");
 		System.out.println("2.- Añadir jugadores");
-		System.out.println("3.- Comprobar información de jugadores");
+		System.out.println("3.- Comprobar información de mi equipo");
 		System.out.println("4.- Eliminar jugadores");
 		System.out.println("5.- Lista de entrenamientos");
 		System.out.println("0.- Salir");
@@ -176,7 +181,6 @@ public class Main {
 
 	public static void seleccionEntrenador(File fichEquipo, File fichUsuarios, Usuarios entrenadorConectado) {
 		System.out.println("Bienvenidos " + entrenadorConectado.getNombre());
-
 		int menu;
 		do {
 			menuEntrenador();
@@ -233,6 +237,7 @@ public class Main {
 				Entrenamiento entra = new Entrenamiento();
 				entra.setDatosEntrenamiento();
 				equipo.addEntrenamiento(entra);
+				System.out.println("Entrenamiento ha sido programado");
 			}
 		}
 		Util.arrayToFile(equipos, fichEquipo);
@@ -250,12 +255,15 @@ public class Main {
 					if (entra.getCodigoEntrenamiento() == codigo) {
 						entra.setDatosEntrenamiento();
 						existe = true;
+
 					}
 				}
 			}
 		}
 		if (!existe) {
 			System.out.println("Este entrenamiento no existe");
+		}else {
+			System.out.println("Entrenamiento ha sido modificado ");
 		}
 		Util.arrayToFile(equipos, fichEquipo);
 	}
@@ -270,7 +278,7 @@ public class Main {
 			} else {
 				oos = new ObjectOutputStream(new FileOutputStream(fichUsuarios));
 			}
-//comprobar que el dorsal no esta libre
+			//comprobar que el dorsal no esta libre
 			do {
 				Usuarios jugador = new Jugador();
 				jugador.setDatos();
@@ -283,6 +291,8 @@ public class Main {
 						System.out.println("El dorsal introducido está repetido");
 					} else {
 						oos.writeObject(jugador);
+						System.out.println(jugador.getNombre() +"El jugador ha sido añadido");
+
 					}
 				}
 				opc = Util.leerInt("¿Desea añadir mas jugadores? 1=si/2=no", 1, 2);
@@ -343,6 +353,7 @@ public class Main {
 	// no elimina jugador
 	private static void eliminarJugadores(File fichUsuarios) {
 		String nombre;
+		boolean existe=false;
 		ObjectInputStream ois = null;
 		ObjectOutputStream oos = null;
 		File auxFile = new File("auxFile.txt");
@@ -361,6 +372,8 @@ public class Main {
 					// Compare usernames case-insensitively
 					if (!jugador.getUser().equalsIgnoreCase(nombre.trim())) {
 						oos.writeObject(jugador);
+					}else {
+						existe=true;
 					}
 				} catch (EOFException e) {
 					break;
@@ -380,6 +393,11 @@ public class Main {
 			}
 			fichUsuarios.delete();
 			auxFile.renameTo(fichUsuarios);
+			if(existe) {
+				System.out.println("El jugador ha sido borrado");
+			}else {
+				System.out.println("El jugador no existe");
+			}
 		}
 	}
 
@@ -393,8 +411,8 @@ public class Main {
 		for (Equipo equipo : equipoList) {
 			if (equipo.getNombreEquipo().equalsIgnoreCase(entrenador.getNombreEquipo())) {
 				for (Entrenamiento ent : equipo.getListaEntrenamiento()) {
-					// System.out.println(equipo.getListaEntrenamiento().size());
 					if (ent.getFetchaHoraInicio().isAfter(myDate)) {
+						
 						ent.getDatosEntrenamiento();
 						System.out.println("Lugar : " + equipo.getEstadio());
 					}
@@ -406,7 +424,7 @@ public class Main {
 
 	private static void menuJugador() {
 		System.out.println("MENU Jugador");
-		System.out.println("1.- Combrobar dorsal (ver disponibles)");
+		System.out.println("1.- Cambiar dorsal");
 		System.out.println("2.- Ver info equipo ");
 		System.out.println("3.- Cambiar contraseña ");
 		System.out.println("4.- Goleador del equipo ");
@@ -474,15 +492,12 @@ public class Main {
 			System.out.println("\n Elige un dorsal libre que desees :");
 			choice = Util.leerInt();
 		} while (dorsalNoLibre.contains(choice) || choice == 0 || choice > 26);
-		// int pos =usuList.indexOf(jugadorConectado);
-		// System.out.println("My size " +usuList.size());
-		// System.out.println("My pos index " +pos);
+		
 		if (pos != -1 && ((Jugador) usuList.get(pos)).getDorsal() != choice) {
 			((Jugador) usuList.get(pos)).setDorsal(choice);
 			System.out.println("Tu nuevo dorsal es : " + choice);
 		}
 		Util.arrayToFile(usuList, fich);
-		// System.out.println("Going Home ");
 	}
 
 	public static void verInfoEquipo(File fichUser, File fich, Jugador jugadorConectado) {
@@ -495,7 +510,6 @@ public class Main {
 		for (Equipo equip : equipoList) {
 			if (equip.getNombreEquipo().equalsIgnoreCase(jugadorConectado.getNombreEquipo())) {
 				equip.getDatosEquipo();
-				// System.out.println("Lista de jugadores de equipo :");
 			}
 		}
 		System.out.println("-------");
@@ -526,12 +540,12 @@ public class Main {
 
 	// this function is working with all users now
 	public static void changeMyPassword(File fich, Jugador jugadorConectado) {
+		boolean changed=false;
 		String strOldPass, strNewPass, strNewPass2;
 		ArrayList<Usuarios> userList = new ArrayList<>();
 
 		Util.fileToArray(fich, userList);
 		for (Usuarios userFromList : userList) {
-			// if (userConnect instanceof Jugador) {
 			if (jugadorConectado.getUser().equals(userFromList.getUser())) {
 				System.out.println("Introduce tu antigua contraseña :");
 				strOldPass = Util.introducirCadena();
@@ -542,18 +556,22 @@ public class Main {
 					strNewPass2 = Util.introducirCadena();
 					if (strNewPass.equals(strNewPass2)) {
 						userFromList.setContraseña(strNewPass);
+						changed=true;
 					}
 				}
 
 			}
-			// }
+			
+		}
+		if(changed) {
+			System.out.println("Tu contraseña se ha cambiado");
 		}
 		Util.arrayToFile(userList, fich);
+		
 	}
 
 	public static void topScorerTeamOrderd(File fichUser, File fichEquipo) {
-		// HASHMAP POR SUMA
-		// TRRE MAPP POR ODENARADA
+	
 		int suma = 0;
 
 		ArrayList<Usuarios> userList = new ArrayList<>();
@@ -678,6 +696,34 @@ public class Main {
 		} while (!inicioSesion);
 
 		return null;
+	}
+	public static boolean equipoDuplicado(File fichEquipos,String equipoComrobar) {
+		ObjectInputStream ois = null;
+		int pos = Util.calculoFichero(fichEquipos);
+
+		try {
+			ois = new ObjectInputStream(new FileInputStream(fichEquipos));
+			for (int i = 0; i < pos; i++) {
+				Equipo duplicatedTeam = (Equipo) ois.readObject();
+				if (duplicatedTeam.getNombreEquipo().equals(equipoComrobar)) {
+					return true;
+				}
+			}
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				ois.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return false;
+
 	}
 
 	public static boolean userDuplicado(File fichUsuarios, Usuarios usuario) {
