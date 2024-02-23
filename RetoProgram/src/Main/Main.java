@@ -363,7 +363,7 @@ public class Main {
 						oos.writeObject(jugador);
 					}
 				} catch (EOFException e) {
-					break; // End of file
+					break;
 				}
 			}
 		} catch (IOException | ClassNotFoundException e) {
@@ -372,12 +372,12 @@ public class Main {
 			try {
 				if (ois != null)
 					ois.close();
-				if (oos != null)
+				if (oos != null) {
 					oos.close();
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
 			fichUsuarios.delete();
 			auxFile.renameTo(fichUsuarios);
 		}
