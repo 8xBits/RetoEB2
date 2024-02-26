@@ -714,10 +714,10 @@ public class Main {
                 throw new ExcepcionUser("El usuario y la contraseña no coinciden");
             } catch (ClassNotFoundException | IOException | ExcepcionLogIn | ExcepcionUser e) {
                 if (e instanceof ExcepcionLogIn) {
-                    System.out.println("El usuarios y la contraseña no coinciden");
+                    System.out.println(e.getMessage());
                     launchNewSession(fichUsuarios, fichEquipos);
                 } else if (e instanceof ExcepcionUser) {
-                    System.out.println("El usuario no existe");
+                    System.out.println(e.getMessage());
                     launchNewSession(fichUsuarios, fichEquipos);
                 }
             } finally {
