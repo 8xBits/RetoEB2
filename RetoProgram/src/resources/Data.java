@@ -161,7 +161,7 @@ public class Data {
         userList.add(player31);
         userList.add(player32);
         userList.add(player33);
-        Jugador player34 = new Jugador("Karim Benzema", "kbenzema", "benzema123", "Real Madrid", 9, 25, 10);
+        Jugador player34 = new Jugador("Karim Benzema", "kbz", "123", "Real Madrid", 9, 25, 10);
         Jugador player35 = new Jugador("Thibaut Courtois", "tcourtois", "courtois456", "Real Madrid", 1, 0, 0);
         Jugador player36 = new Jugador("Sergio Ramos", "sramos", "ramos789", "Real Madrid", 4, 3, 2);
         Jugador player37 = new Jugador("Raphaël Varane", "rvarane", "varaneabc", "Real Madrid", 5, 2, 0);

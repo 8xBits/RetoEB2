@@ -276,6 +276,8 @@ public class Util {
 			oos = new ObjectOutputStream(new FileOutputStream(fich));
 			for (T obj : miList) {
 				oos.writeObject(obj);
+				oos.flush();
+
 			}
 			miList.clear();
 			oos.close();
@@ -305,6 +307,7 @@ public class Util {
 					obj = (T) ois.readObject();
 					miList.add(obj);
 				}*/
+
 				ois.close();
 			} catch (IOException e) {
 				e.printStackTrace();
