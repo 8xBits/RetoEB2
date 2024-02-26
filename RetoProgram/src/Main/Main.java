@@ -159,7 +159,6 @@ public class Main {
         }
     }
 
-    // alder
     private static void menuAdmin() {
 
         System.out.println("MENU ADMIN");
@@ -168,7 +167,6 @@ public class Main {
         System.out.println("3.- Salir");
     }
 
-    // enzo
     private static void menuEntrenador() {
         System.out.println("-------MENU-----------");
         System.out.println("1.- Programar entrenamiento");
@@ -350,7 +348,6 @@ public class Main {
         }
     }
 
-    // no elimina jugador
     private static void eliminarJugadores(File fichUsuarios) {
         String nombre;
         boolean existe = false;
@@ -527,7 +524,6 @@ public class Main {
         }
         Util.arrayToFile(usuList, fich);
         dorsalNoLibre.clear();
-        //usuList.clear();
     }
 
 
@@ -570,7 +566,6 @@ public class Main {
         }
     }
 
-    // this function is working with all users now
     public static void changeMyPassword(File fich, Jugador jugadorConectado) {
         boolean changed = false;
         String strOldPass, strNewPass, strNewPass2;
@@ -644,7 +639,7 @@ public class Main {
                 goalsByEquipos.put(sumaGoals, equipos);
             }
         }
-        // Mostrar TreeMap ordenad
+        // Mostrar TreeMap ordenado
         for (Map.Entry<Integer, ArrayList<String>> entry : goalsByEquipos.entrySet()) {
             for (String playerName : entry.getValue()) {
                 System.out.println(playerName + ": " + entry.getKey() + " goals");
